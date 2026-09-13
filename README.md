@@ -31,7 +31,7 @@
 
 | 平台 | 获取方式 | 说明 |
 | :--- | :--- | :--- |
-| Web 版 | [GitHub Pages 在线演示](https://your-username.github.io/study-well/) | 推荐使用 Chrome / Edge / Safari |
+| Web 版 | [GitHub Pages 在线演示](https://isnp.github.io/StudySentry/) | 推荐使用 Chrome / Edge / Safari |
 | Android APK | [Releases 页面下载](../../releases/latest) | 基于 HBuilderX 打包，支持原生权限调用 |
 
 > 注意：摄像头与麦克风 API 仅在 localhost 或 HTTPS 环境下可用。直接双击打开 HTML 文件时，部分浏览器可能限制媒体权限。
@@ -47,6 +47,16 @@
 | 音频处理 | MediaRecorder + AudioContext | 录音采集与交互音效反馈 |
 | 动画效果 | canvas-confetti + CSS Keyframes | 庆祝特效与微交互动画 |
 | App 打包 | HBuilderX (uni-app WebView) | 桥接原生权限，封装为独立 APK |
+
+## 使用的开源项目
+face-api.js	@vladmandic
+canvas-confetti	@catdad
+Font Awesome Free	Fonticons, Inc.
+Google Fonts	Google
+jsDelivr	Prospect One
+
+## 开发致谢
+Deepseek
 
 ### 存储策略
 
@@ -66,12 +76,4 @@ npx serve .
 # 或
 python3 -m http.server 8080
 
-## 使用的开源项目
-face-api.js	@vladmandic
-canvas-confetti	@catdad
-Font Awesome Free	Fonticons, Inc.
-Google Fonts	Google
-jsDelivr	Prospect One
 
-## 开发致谢
-Deepseek
