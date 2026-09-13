@@ -1,9 +1,9 @@
-# 好好学习 (Study Well)
+# 好好学习 (StudySentry)
 
 > 陪伴学习，让专注有回报。
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.2-brightgreen.svg)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.0.6-brightgreen.svg)](./CHANGELOG.md)
 [![Platform](https://img.shields.io/badge/platform-Web_%7C_Android-lightgrey.svg)](#)
 
 ## 项目简介
@@ -49,11 +49,15 @@
 | App 打包 | HBuilderX (uni-app WebView) | 桥接原生权限，封装为独立 APK |
 
 ## 使用的开源项目
-face-api.js	@vladmandic
-canvas-confetti	@catdad
-Font Awesome Free	Fonticons, Inc.
-Google Fonts	Google
-jsDelivr	Prospect One
+face-api.js-@vladmandic
+
+canvas-confetti-@catdad
+
+
+Font Awesome-Free	Fonticons, Inc.
+Google Fonts-Google
+
+jsDelivr-Prospect One
 
 ## 开发致谢
 Deepseek
