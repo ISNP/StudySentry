@@ -1,0 +1,3401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>好好学习 · 专注学习助手</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+.q-timer{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:var(--green);color:#fff;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;transition:background .2s,transform .2s;box-shadow:0 3px 0 var(--green-d)}
+.q-timer i{font-size:11px;opacity:.9}
+.q-timer.warn{background:var(--red);box-shadow:0 3px 0 var(--red-d);animation:timerPulse .8s ease-in-out infinite}
+@keyframes timerPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+:root{--green:#3dd68c;--green-d:#28b875;--blue:#37b6ff;--blue-d:#1f9ae0;--orange:#ff9f43;--orange-d:#e58620;--red:#ff5e5e;--red-d:#e04a4a;--gold:#ffd166;--gold-d:#e8b34a;--purple:#a78bfa;--purple-d:#8b6cf0;--bg:#f6f8fc;--card:#ffffff;--text:#2d3145;--text-2:#7d8597;--border:#e8edf5;--shadow:0 8px 24px rgba(58,90,168,0.12);--shadow-sm:0 4px 12px rgba(58,90,168,0.08)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:'Baloo 2','Nunito','PingFang SC','Microsoft YaHei',sans-serif;font-weight:700;color:var(--text);background:var(--bg);overflow:hidden;user-select:none;-webkit-user-select:none}
+button{font-family:inherit;font-weight:700;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit}
+img,svg{display:block;max-width:100%}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:480px;margin:0 auto;background:var(--bg);position:relative;overflow:hidden}
+.topbar{flex-shrink:0;padding:16px 20px 8px;display:flex;align-items:center;justify-content:space-between;background:var(--bg)}
+.topbar .title{font-size:22px;font-weight:800}
+.topbar .subtitle{font-size:13px;color:var(--text-2);font-weight:600}
+.screen{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:8px 16px 100px;animation:screen-in .35s ease}
+.screen::-webkit-scrollbar{width:0}
+@keyframes screen-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.tabbar{position:absolute;bottom:0;left:0;right:0;height:72px;display:flex;background:var(--card);box-shadow:0 -4px 20px rgba(58,90,168,0.08);z-index:20;border-top-left-radius:22px;border-top-right-radius:22px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--text-2);font-size:11px;font-weight:700;transition:transform .25s cubic-bezier(.34,1.56,.64,1),color .2s}
+.tab i{font-size:20px}
+.tab.active{color:var(--green);transform:translateY(-4px)}
+.tab.active i{animation:bounce .5s ease}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 24px;border-radius:999px;font-size:16px;font-weight:800;background:var(--card);color:var(--text);transition:transform .15s,box-shadow .15s,filter .15s;box-shadow:0 6px 0 var(--border);min-height:52px}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--border)}
+.btn:disabled{opacity:.5;filter:grayscale(.4);pointer-events:none}
+.btn i{font-size:18px}
+.btn-primary{background:var(--green);color:#fff;box-shadow:0 6px 0 var(--green-d)}
+.btn-blue{background:var(--blue);color:#fff;box-shadow:0 6px 0 var(--blue-d)}
+.btn-orange{background:var(--orange);color:#fff;box-shadow:0 6px 0 var(--orange-d)}
+.btn-red{background:var(--red);color:#fff;box-shadow:0 6px 0 var(--red-d)}
+.btn-gold{background:var(--gold);color:#fff;box-shadow:0 6px 0 var(--gold-d)}
+.btn-purple{background:var(--purple);color:#fff;box-shadow:0 6px 0 var(--purple-d)}
+.btn-ghost{background:var(--card);color:var(--text);box-shadow:0 6px 0 var(--border)}
+.btn-block{width:100%}
+.btn-lg{padding:18px 32px;font-size:18px;min-height:60px}
+.btn-sm{padding:8px 14px;font-size:13px;min-height:36px;box-shadow:0 4px 0 var(--border)}
+.card{background:var(--card);border-radius:24px;padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+.card-title{font-size:16px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.profile-bar{display:flex;align-items:center;gap:14px;padding:8px 4px 14px}
+.avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;box-shadow:0 4px 0 var(--border);flex-shrink:0}
+.avatar-lg{width:80px;height:80px;font-size:38px}
+.profile-bar .name{font-size:18px;font-weight:800}
+.profile-bar .streak{font-size:13px;color:var(--orange);font-weight:700;display:flex;align-items:center;gap:4px}
+.profile-bar .streak i{animation:flame 1.4s ease-in-out infinite}
+@keyframes flame{0%,100%{transform:scale(1) translateY(0);opacity:1}50%{transform:scale(1.15) translateY(-2px);opacity:.85}}
+.points-pill{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#fff5d6,#ffe9a8);color:var(--gold-d);padding:8px 14px;border-radius:999px;font-size:16px;font-weight:800;box-shadow:0 4px 0 var(--gold);transition:transform .2s}
+.points-pill.bump{animation:bump .5s ease}
+@keyframes bump{0%{transform:scale(1)}30%{transform:scale(1.2)}100%{transform:scale(1)}}
+.study-mode-tabs{display:flex;gap:8px;background:var(--card);padding:6px;border-radius:999px;box-shadow:var(--shadow-sm);margin-bottom:16px}
+.study-mode-tab{flex:1;padding:10px;border-radius:999px;font-size:14px;font-weight:700;color:var(--text-2);transition:all .25s}
+.study-mode-tab.active{background:var(--green);color:#fff;box-shadow:0 4px 0 var(--green-d)}
+.challenge-picker{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
+.challenge-card{flex-shrink:0;width:110px;padding:14px 10px;border-radius:18px;background:var(--card);text-align:center;box-shadow:0 4px 0 var(--border);cursor:pointer;transition:transform .15s}
+.challenge-card:active{transform:translateY(2px);box-shadow:0 2px 0 var(--border)}
+.challenge-card.active{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;box-shadow:0 4px 0 var(--purple-d)}
+.challenge-card .min{font-size:24px;font-weight:800}
+.challenge-card .lbl{font-size:11px;font-weight:600;opacity:.8}
+.ring-wrap{display:flex;justify-content:center;margin:16px 0;position:relative}
+.ring-svg{transition:opacity .3s}
+.ring-svg.over .ring-fg{stroke:var(--red) !important;animation:ringPulse 1s ease-in-out infinite}
+@keyframes ringPulse{0%,100%{opacity:1}50%{opacity:.5}}
+.ring-label{font-size:38px;font-weight:800;fill:var(--text)}
+.ring-sub{font-size:14px;font-weight:700;fill:var(--text-2)}
+.video-wrap{position:relative;width:100%;max-width:320px;aspect-ratio:4/3;margin:0 auto 16px;border-radius:24px;overflow:hidden;background:#000;box-shadow:var(--shadow);transition:all .4s cubic-bezier(.4,0,.2,1)}
+.video-wrap video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.video-wrap.idle::before{content:'\f03d';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:56px;color:var(--text-2);background:linear-gradient(135deg,#e0e8f5,#f6f8fc)}
+.video-wrap.idle video{display:none}
+.video-wrap::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 0 0px transparent;transition:box-shadow .3s;z-index:5}
+.screen.studying{padding:0;overflow:hidden}
+.screen.studying .video-wrap{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;max-width:none;margin:0;border-radius:0;box-shadow:none;z-index:50}
+.screen.studying .video-wrap video{width:100%;height:100%;object-fit:cover}
+.screen.studying .video-wrap.idle::before{display:none}
+.screen.studying .video-wrap.idle video{display:block}
+.screen.studying .video-wrap.border-green::after{box-shadow:inset 0 0 0 6px var(--green)}
+.screen.studying .video-wrap.border-yellow::after{box-shadow:inset 0 0 0 8px var(--gold);animation:borderFlash 1s ease-in-out infinite}
+.screen.studying .video-wrap.border-red::after{box-shadow:inset 0 0 0 10px var(--red);animation:borderFlash .6s ease-in-out infinite}
+@keyframes borderFlash{0%,100%{opacity:1}50%{opacity:0.35}}
+.screen.studying .study-setup,.screen.studying .study-pre-ring,.screen.studying .study-pre-controls{display:none !important}
+.hud{display:none;position:absolute;inset:0;z-index:10;pointer-events:none;flex-direction:column;justify-content:space-between;padding:20px 16px env(safe-area-inset-bottom,20px)}
+.screen.studying .hud{display:flex}
+.hud > *{pointer-events:auto}
+.hud-top{display:flex;align-items:center;gap:14px;background:rgba(0,0,0,0.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:20px;padding:12px 16px;color:#fff}
+.hud-top .ring-svg{width:64px;height:64px;flex-shrink:0}
+.hud-top .ring-svg text{fill:#fff}
+.hud-top .ring-svg .ring-sub{fill:rgba(255,255,255,0.8)}
+.hud-stats{flex:1;display:flex;gap:16px;font-size:14px;font-weight:700}
+.hud-stat{display:flex;flex-direction:column;align-items:center;gap:2px}
+.hud-stat i{font-size:16px;opacity:0.85}
+.hud-stat .v{font-size:18px;font-weight:800}
+.hud-stat .l{font-size:10px;opacity:0.7;font-weight:600}
+.hud-status{display:flex;justify-content:center;margin-top:-40px}
+.hud-status .status-badge{font-size:18px;padding:12px 24px;box-shadow:0 6px 0 rgba(0,0,0,0.2),0 8px 24px rgba(0,0,0,0.3)}
+.hud-bottom{display:flex;gap:10px}
+.hud-bottom .btn{flex:1;box-shadow:0 6px 0 rgba(0,0,0,0.25)}
+.status-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;font-size:16px;font-weight:800;color:#fff;margin:0 auto 16px;box-shadow:0 4px 0 rgba(0,0,0,0.15);transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s}
+.status-badge.status-focusing{background:var(--green)}
+.status-badge.status-absent{background:var(--red)}
+.status-badge.status-distract{background:var(--orange)}
+.status-badge.status-idle{background:var(--text-2)}
+.status-badge.status-degraded{background:var(--gold)}
+.status-badge.status-nocamera{background:var(--red)}
+.status-badge.pulse{animation:badgePulse .5s ease}
+@keyframes badgePulse{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
+.study-center{display:flex;flex-direction:column;align-items:center;text-align:center}
+.session-info{display:flex;justify-content:space-around;width:100%;margin:12px 0 20px;font-size:13px;color:var(--text-2)}
+.session-info .item{text-align:center}
+.session-info .item .v{font-size:18px;color:var(--text);font-weight:800}
+.shop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.shop-card{background:var(--card);border-radius:20px;padding:18px 12px;box-shadow:var(--shadow);text-align:center;display:flex;flex-direction:column;gap:8px;animation:staggerIn .4s ease both}
+@keyframes staggerIn{from{opacity:0;transform:translateY(16px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+.shop-card .icon{width:56px;height:56px;margin:0 auto;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;box-shadow:0 4px 0 var(--gold-d)}
+.shop-card .name{font-size:14px;font-weight:700;min-height:38px;line-height:1.25}
+.shop-card .price{font-size:16px;font-weight:800;color:var(--gold-d);display:flex;align-items:center;justify-content:center;gap:4px}
+.shop-card .price i{font-size:14px}
+.shop-card .stock{font-size:11px;color:var(--text-2)}
+.shop-card .btn{padding:8px 12px;font-size:13px;min-height:38px;margin-top:4px}
+.empty{text-align:center;padding:60px 20px;color:var(--text-2)}
+.empty i{font-size:48px;margin-bottom:12px;opacity:.5}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat-card{background:var(--card);border-radius:18px;padding:14px 8px;text-align:center;box-shadow:var(--shadow-sm)}
+.stat-card .v{font-size:18px;font-weight:800;color:var(--text)}
+.stat-card .l{font-size:11px;color:var(--text-2);font-weight:600}
+.stat-card.green .v{color:var(--green-d)}
+.stat-card.red .v{color:var(--red-d)}
+.stat-card.gold .v{color:var(--gold-d)}
+.day-group{margin-bottom:14px}
+.day-group .day-title{font-size:13px;font-weight:800;color:var(--text-2);margin:10px 4px}
+.record-card{background:var(--card);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow-sm);margin-bottom:10px;cursor:pointer}
+.record-card .row1{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.record-card .time{font-size:13px;color:var(--text);font-weight:700}
+.record-card .mode-tag{font-size:11px;padding:3px 10px;border-radius:999px;background:var(--blue);color:#fff;font-weight:700}
+.record-card .mode-tag.challenge{background:var(--purple)}
+.record-card .row2{display:flex;justify-content:space-between;font-size:12px;color:var(--text-2)}
+.record-card .points-gain{color:var(--green-d);font-weight:800}
+.record-card .points-loss{color:var(--red-d);font-weight:800}
+.record-card .violations{margin-top:8px;display:none}
+.record-card.expanded .violations{display:block}
+.violation-item{display:flex;gap:10px;align-items:center;background:var(--bg);border-radius:12px;padding:8px;margin-top:6px}
+.violation-item img{width:80px;height:60px;object-fit:cover;border-radius:8px;background:#000}
+.violation-item .info{flex:1}
+.violation-item .type{font-size:13px;font-weight:700;color:var(--red-d)}
+.violation-item .t{font-size:11px;color:var(--text-2)}
+.violation-item .no-snap{width:80px;height:60px;background:#ddd;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#999;font-size:22px}
+.me-header{background:linear-gradient(135deg,var(--green),var(--blue));border-radius:24px;padding:24px;color:#fff;text-align:center;margin-bottom:16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.me-header::after{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.1)}
+.me-header .avatar{margin:0 auto 10px;background:rgba(255,255,255,0.25);box-shadow:none}
+.me-header .name{font-size:22px;font-weight:800}
+.me-header .stat-row{display:flex;justify-content:space-around;margin-top:14px;background:rgba(255,255,255,0.2);border-radius:14px;padding:10px}
+.me-header .stat-row .item{text-align:center}
+.me-header .stat-row .v{font-size:18px;font-weight:800}
+.me-header .stat-row .l{font-size:11px;opacity:.85}
+.menu-list{background:var(--card);border-radius:18px;box-shadow:var(--shadow-sm);overflow:hidden}
+.menu-item{padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.menu-item:last-child{border-bottom:none}
+.menu-item:active{background:var(--bg)}
+.menu-item i:first-child{width:28px;text-align:center;color:var(--green-d);font-size:18px}
+.menu-item .label{flex:1;font-size:15px;font-weight:700}
+.menu-item .arrow{color:var(--text-2);font-size:14px}
+.setup-wrap{min-height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;text-align:center}
+.setup-wrap .logo{width:96px;height:96px;border-radius:28px;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;font-size:48px;margin-bottom:18px;box-shadow:var(--shadow);animation:logoBob 3s ease-in-out infinite}
+@keyframes logoBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-6px) rotate(3deg)}}
+.setup-wrap h1{font-size:28px;font-weight:800;margin-bottom:6px}
+.setup-wrap .sub{color:var(--text-2);margin-bottom:28px}
+.setup-wrap .input{width:100%;padding:16px 20px;border-radius:999px;border:2px solid var(--border);background:var(--card);font-size:16px;font-weight:700;outline:none;transition:border .2s;margin-bottom:16px;text-align:center}
+.setup-wrap .input:focus{border-color:var(--green)}
+.avatar-picker{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
+.avatar-option{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;cursor:pointer;box-shadow:0 4px 0 var(--border);transition:transform .2s}
+.avatar-option.active{transform:scale(1.15);box-shadow:0 4px 0 var(--green-d);outline:3px solid var(--green)}
+.admin-tabs{display:flex;gap:6px;overflow-x:auto;padding:6px;background:var(--card);border-radius:999px;box-shadow:var(--shadow-sm);margin-bottom:14px}
+.admin-tab{flex-shrink:0;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:700;color:var(--text-2);white-space:nowrap;transition:all .2s}
+.admin-tab.active{background:var(--purple);color:#fff;box-shadow:0 4px 0 var(--purple-d)}
+.form-row{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+.form-row label{font-size:13px;font-weight:700;color:var(--text-2);padding-left:4px}
+.form-row input,.form-row select{padding:12px 16px;border-radius:14px;border:2px solid var(--border);background:var(--card);font-size:15px;font-weight:700;outline:none;transition:border .2s}
+.form-row input:focus,.form-row select:focus{border-color:var(--purple)}
+.form-row input[type="number"]{width:100%}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:6px 12px;border-radius:999px;background:var(--card);font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;box-shadow:0 3px 0 var(--border);cursor:pointer}
+.chip.active{background:var(--purple);color:#fff;box-shadow:0 3px 0 var(--purple-d)}
+.chip .x{color:var(--text-2);font-size:11px;margin-left:4px}
+.chip.active .x{color:rgba(255,255,255,0.7)}
+.product-row{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:14px;padding:10px 12px;margin-bottom:8px;box-shadow:var(--shadow-sm)}
+.product-row .icon{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.product-row .info{flex:1;min-width:0}
+.product-row .name{font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.product-row .meta{font-size:12px;color:var(--text-2)}
+.product-row .actions{display:flex;gap:6px}
+.product-row .actions button{width:34px;height:34px;border-radius:12px;background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;font-size:14px}
+.product-row .actions .del{background:var(--red);color:#fff}
+.icon-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:6px}
+.icon-option{aspect-ratio:1;border-radius:12px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text);cursor:pointer;transition:all .15s}
+.icon-option.active{background:var(--green) !important;color:#fff;transform:scale(1.1)}
+.modal-mask,.badge-mask{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;transition:opacity .3s;padding:24px}
+.modal-mask.show,.badge-mask.show{opacity:1}
+.modal-card,.badge-card{background:var(--card);border-radius:24px;padding:24px;width:100%;max-width:360px;text-align:center;transform:scale(.85);transition:transform .3s cubic-bezier(.34,1.56,.64,1);box-shadow:var(--shadow)}
+.modal-mask.show .modal-card,.badge-mask.show .badge-card{transform:scale(1)}
+.modal-title{font-size:18px;font-weight:800;margin-bottom:12px}
+.modal-body{font-size:14px;color:var(--text-2);margin-bottom:18px;line-height:1.5}
+.modal-input{width:100%;padding:14px 16px;border-radius:14px;border:2px solid var(--border);font-size:16px;font-weight:700;outline:none;margin-bottom:16px;text-align:center}
+.modal-input:focus{border-color:var(--green)}
+.modal-actions{display:flex;gap:10px}
+.modal-actions .btn{flex:1}
+.badge-card{padding:30px 24px}
+.badge-icon{width:88px;height:88px;margin:0 auto 16px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));display:flex;align-items:center;justify-content:center;color:#fff;font-size:44px;box-shadow:0 6px 0 var(--gold-d),0 0 30px rgba(255,209,102,0.4);animation:badgePop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes badgePop{0%{transform:scale(0) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+.badge-title{font-size:22px;font-weight:800;margin-bottom:6px}
+.badge-desc{font-size:14px;color:var(--text-2);margin-bottom:22px}
+.badge-card .btn{width:100%}
+#toast-wrap{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:500;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{background:rgba(45,49,69,0.95);color:#fff;padding:12px 18px;border-radius:999px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow);transform:translateY(-20px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);max-width:90vw}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-success{background:var(--green-d)}
+.toast-error{background:var(--red-d)}
+.toast-warn{background:var(--orange-d)}
+.toast-info{background:rgba(45,49,69,0.95)}
+.float-points{position:fixed;font-size:28px;font-weight:800;pointer-events:none;z-index:400;transition:all 1s ease-out;transform:translate(-50%,0)}
+.float-points.pos{color:var(--green-d)}
+.float-points.neg{color:var(--red-d)}
+.float-points.fly{transform:translate(-50%,-80px);opacity:0}
+#red-pulse{position:fixed;inset:0;pointer-events:none;z-index:250;box-shadow:inset 0 0 0 0px var(--red);transition:box-shadow .4s}
+#red-pulse.active{animation:redPulse 1.2s ease}
+@keyframes redPulse{0%{box-shadow:inset 0 0 0 0px rgba(255,94,94,0)}20%{box-shadow:inset 0 0 0 12px rgba(255,94,94,0.5)}100%{box-shadow:inset 0 0 0 0px rgba(255,94,94,0)}}
+#confetti-wrap{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:260}
+.confetti-piece{position:absolute;top:-20px;animation:confettiFall 1.6s linear forwards}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0.6}}
+.row{display:flex;gap:10px;align-items:center}
+.row.between{justify-content:space-between}
+.col{display:flex;flex-direction:column;gap:8px}
+.center{display:flex;align-items:center;justify-content:center}
+.muted{color:var(--text-2)}
+.spacer{flex:1}
+.text-center{text-align:center}
+.section-title{font-size:14px;font-weight:800;color:var(--text-2);margin:16px 4px 10px;display:flex;align-items:center;gap:6px}
+.empty-list{text-align:center;padding:40px 20px;color:var(--text-2);font-size:14px}
+.notice{background:linear-gradient(135deg,#fff5d6,#ffe9a8);color:var(--gold-d);padding:12px 16px;border-radius:14px;font-size:13px;font-weight:700;display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.notice i{font-size:18px}
+.entry-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.entry-card{display:flex;align-items:center;gap:10px;padding:14px 12px;border-radius:16px;color:#fff;font-weight:700;cursor:pointer;transition:transform .2s;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.entry-card:active{transform:scale(0.96)}
+.entry-card .ic{width:42px;height:42px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.25);font-size:20px}
+.entry-card .entry-title{font-size:16px;font-weight:800}
+.entry-card .entry-sub{font-size:11px;font-weight:600;opacity:0.85}
+.entry-reading{background:linear-gradient(135deg,#ff9f43,#ff5e5e)}
+.entry-math{background:linear-gradient(135deg,#37b6ff,#a78bfa)}
+.modal-textarea{width:100%;resize:vertical;min-height:100px;font-family:inherit;line-height:1.5}
+.progress-bar{width:100%;height:6px;background:var(--border);border-radius:999px;overflow:hidden;margin-bottom:14px}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,var(--green),var(--blue));transition:width .3s ease}
+.math-card{text-align:center;padding:20px 16px}
+.math-header{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;color:var(--text-2);margin-bottom:14px}
+.math-header .q-level{background:var(--blue);color:#fff;padding:2px 10px;border-radius:999px;font-size:11px}
+.math-question{display:flex;align-items:center;justify-content:center;gap:10px;font-size:32px;font-weight:800;padding:24px 12px;background:linear-gradient(135deg,#f5f9ff,#fdf5ff);border-radius:20px;margin-bottom:16px;flex-wrap:wrap}
+.math-question .q-text{color:var(--text)}
+.math-question .q-equals{color:var(--text-2);font-size:28px}
+.math-question input{font-size:32px;font-weight:800;text-align:center;border:none;border-bottom:3px solid var(--blue);background:transparent;width:120px;outline:none;padding:4px;color:var(--green-d)}
+.q-feedback{min-height:28px;margin-bottom:8px;font-weight:700;font-size:15px}
+.fb-ok{color:var(--green-d);display:flex;gap:6px;align-items:center;justify-content:center}
+.fb-no{color:var(--red-d);display:flex;gap:6px;align-items:center;justify-content:center}
+.math-points-bar{display:flex;justify-content:center;align-items:center;gap:8px;padding:10px;background:linear-gradient(135deg,#fff8e1,#fff3c2);border-radius:14px;font-weight:700;color:#b8860b;font-size:14px}
+.math-card.result{padding:30px 20px}
+.result-emoji{font-size:60px;margin-bottom:8px}
+.result-title{font-size:22px;font-weight:800;margin-bottom:16px}
+.result-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.stat-card.green-sm{background:linear-gradient(135deg,#b4f0d1,#7bdfb0)}
+.stat-card.gold-sm{background:linear-gradient(135deg,#ffe7a8,#ffd166)}
+.stat-card.blue-sm{background:linear-gradient(135deg,#c7e5ff,#9ccaff)}
+.reading-back{margin-bottom:10px}
+.reading-tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 2px;margin-bottom:12px;-webkit-overflow-scrolling:touch}
+.reading-tabs::-webkit-scrollbar{display:none}
+.rtab{flex-shrink:0;padding:8px 14px;border-radius:999px;background:var(--card);font-size:13px;font-weight:700;color:var(--text-2);display:flex;align-items:center;gap:6px;border:2px solid transparent;transition:all .2s}
+.rtab.active{background:linear-gradient(135deg,#ff9f43,#ff5e5e);color:#fff;border-color:rgba(255,255,255,0.3)}
+.reading-list{display:flex;flex-direction:column;gap:8px}
+.reading-item{display:flex;align-items:center;gap:12px;padding:14px;background:var(--card);border-radius:16px;cursor:pointer;transition:transform .2s;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
+.reading-item:active{transform:scale(0.98)}
+.reading-item .ri-icon{width:44px;height:44px;flex-shrink:0;border-radius:12px;background:linear-gradient(135deg,#ff9f43,#ff5e5e);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px}
+.reading-item .ri-body{flex:1;min-width:0}
+.reading-item .ri-title{font-weight:800;font-size:15px;margin-bottom:2px}
+.reading-item .ri-sub{font-size:12px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reading-item .ri-arrow{color:var(--text-2)}
+.sub-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card);border-radius:12px;font-size:13px;font-weight:600}
+.sub-item .sub-title{flex:1}
+.reading-practice{padding:18px;text-align:center}
+.rp-title{font-size:22px;font-weight:800;margin-bottom:2px}
+.rp-author{font-size:12px;color:var(--text-2);margin-bottom:14px}
+.rp-content{text-align:left;padding:16px;background:linear-gradient(135deg,#fff8f0,#fef3e2);border-radius:16px;line-height:1.9;font-size:16px;font-weight:600;color:var(--text)}
+.recorder-panel{text-align:center;padding:20px 10px;margin:12px 0}
+.rec-timer{display:flex;align-items:center;justify-content:center;gap:10px;font-size:22px;font-weight:800;color:var(--red-d);font-variant-numeric:tabular-nums;margin-bottom:16px}
+.rec-dot{width:14px;height:14px;border-radius:50%;background:var(--red);box-shadow:0 0 0 0 rgba(255,94,94,0.6);transition:all .2s}
+.rec-dot.rec{animation:recBlink 0.8s infinite}
+@keyframes recBlink{0%,100%{box-shadow:0 0 0 0 rgba(255,94,94,0.7);transform:scale(1)}50%{box-shadow:0 0 0 10px rgba(255,94,94,0);transform:scale(0.85)}}
+.rec-big-btn-wrap{display:flex;justify-content:center}
+.rec-btn{border:none;border-radius:50%;width:110px;height:110px;font-size:15px;font-weight:800;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,0.2),0 10px 24px rgba(0,0,0,0.15);transition:transform .15s}
+.rec-btn:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,0.2)}
+.rec-btn i{font-size:34px}
+.rec-btn.start{background:linear-gradient(135deg,#ff9f43,#ff5e5e)}
+.rec-btn.stop{background:linear-gradient(135deg,#ff5e5e,#c0392b)}
+.rec-hint{margin-top:12px;font-size:12px;color:var(--text-2)}
+.reading-preview{padding:16px}
+.preview-title{font-weight:700;font-size:14px;margin-bottom:10px}
+.preview-actions{display:flex;gap:8px;margin-top:12px}
+.preview-actions .btn{flex:1}
+.rm-row{display:flex;gap:10px;align-items:stretch;padding:12px;background:var(--card);border-radius:14px;margin-bottom:8px}
+.rm-row .rm-type{flex-shrink:0;background:linear-gradient(135deg,#ff9f43,#ff5e5e);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;height:fit-content}
+.rm-row .rm-body{flex:1;min-width:0}
+.rm-row .rm-title{font-weight:800;font-size:14px;margin-bottom:2px}
+.rm-row .rm-content{font-size:12px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rm-row .rm-actions{display:flex;gap:4px;align-items:center}
+.rm-row .rm-actions button{border:none;background:transparent;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-2)}
+.rm-row .rm-actions .edit:hover{background:var(--green);color:#fff}
+.rm-row .rm-actions .del:hover{background:var(--red);color:#fff}
+.review-card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:10px}
+.review-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+.review-title{font-weight:800;font-size:15px}
+.review-meta{font-size:12px;color:var(--text-2)}
+.review-note{margin-top:8px;padding:8px 10px;background:#fff9e6;border-left:3px solid var(--gold);border-radius:6px;font-size:12px;color:#8a6d00}
+.review-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.review-actions .btn{flex:1;min-width:80px}
+.chip .chip-sub{display:block;font-size:10px;font-weight:600;opacity:0.8;margin-top:2px}
+.math-config-display{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.math-config-display .mcd-item{padding:10px 12px;background:linear-gradient(135deg,#f5f9ff,#fdf5ff);border-radius:12px;border:1px dashed #d0d8e8}
+.math-config-display .mcd-item:last-child{grid-column:span 2}
+.math-config-display .mcd-label{font-size:11px;color:var(--text-2);font-weight:700;margin-bottom:4px}
+.math-config-display .mcd-value{font-size:15px;font-weight:800;color:var(--text)}
+.math-config-display .mcd-desc{display:block;font-size:11px;font-weight:600;color:var(--text-2);margin-top:2px}
+.icon-option.active{background:var(--green) !important;color:#fff}
+.record-head{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:14px;margin-bottom:10px}
+.record-head .meta{font-size:12px;color:var(--text-2)}
+.record-body{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.about-hero{text-align:center;padding:24px 16px 20px}
+.about-logo{width:96px;height:96px;border-radius:28px;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;font-size:48px;margin:0 auto 14px;box-shadow:var(--shadow);animation:logoBob 3s ease-in-out infinite}
+.about-name{font-size:24px;font-weight:800;margin-bottom:6px}
+.about-version{display:inline-block;padding:3px 12px;background:var(--card);border-radius:999px;font-size:12px;font-weight:800;color:var(--text-2);box-shadow:var(--shadow-sm);margin-bottom:10px}
+.about-tagline{font-size:13px;color:var(--text-2);font-weight:600}
+.about-list{background:var(--card);border-radius:18px;box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:14px}
+.about-row{display:flex;align-items:center;gap:12px;padding:14px 16px}
+.about-row + .about-row{border-top:1px solid var(--border)}
+.about-row-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0}
+.about-row-body{flex:1;min-width:0}
+.about-row-label{font-size:12px;color:var(--text-2);font-weight:600}
+.about-row-value{font-size:14px;font-weight:800;color:var(--text);word-break:break-all}
+.uid-box{padding:16px;background:linear-gradient(135deg,#f5f9ff,#fdf5ff);border:2px dashed #d0d8e8;border-radius:14px;font-family:'Courier New',Consolas,monospace;font-size:13px;font-weight:700;word-break:break-all;line-height:1.6;color:var(--text);user-select:all;-webkit-user-select:all;text-align:left}
+.uid-meta{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.uid-chip{padding:4px 10px;background:var(--bg);border-radius:999px;font-size:11px;font-weight:700;color:var(--text-2)}
+.about-footer{text-align:center;color:var(--text-2);font-size:12px;margin:24px 0 40px;line-height:1.8}
+.about-footer b{color:var(--text)}
+
+/* ===== 使用须知弹窗 ===== */
+#agreement-screen{
+  position:fixed;inset:0;
+  z-index:1000;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s;
+}
+#agreement-screen.show{opacity:1;pointer-events:auto}
+.agr-card{
+  background:var(--card);
+  border-radius:24px;
+  width:100%;
+  max-width:420px;
+  max-height:88vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  transform:scale(.9);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:var(--shadow);
+}
+#agreement-screen.show .agr-card{transform:scale(1)}
+.agr-head{padding:24px 20px 14px;text-align:center;flex-shrink:0}
+.agr-logo{width:56px;height:56px;border-radius:18px;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;margin:0 auto 10px;box-shadow:0 6px 20px rgba(61,214,140,.3)}
+.agr-title{font-size:20px;font-weight:800;color:var(--text)}
+.agr-version{font-size:12px;color:var(--text-2);margin-top:4px}
+.agr-body{flex:1;overflow-y:auto;padding:0 20px;line-height:1.7;font-size:13px;color:var(--text);-webkit-overflow-scrolling:touch}
+.agr-body::-webkit-scrollbar{width:0}
+.agr-section{margin-bottom:16px}
+.agr-section:last-child{margin-bottom:0}
+.agr-section-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.agr-section p{margin-bottom:4px;color:var(--text-2)}
+.agr-section ol{padding-left:20px;margin-top:4px;color:var(--text-2)}
+.agr-section ol li{margin-bottom:3px}
+.agr-highlight{background:linear-gradient(135deg,#fff5d6,#ffe9a8);border-left:3px solid var(--gold-d);border-radius:8px;padding:12px 14px;margin-top:6px;color:#b8860b;font-weight:700;line-height:1.7;font-size:13px}
+.agr-highlight b{color:#8a6d00}
+.agr-foot{padding:14px 20px 20px;flex-shrink:0;border-top:1px solid var(--border);background:var(--card)}
+.agr-check{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg);border-radius:12px;margin-bottom:12px;cursor:pointer;user-select:none;transition:background .2s}
+.agr-check:active{background:#e8edf5}
+.agr-check input{width:18px;height:18px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+.agr-check span{font-size:13px;font-weight:700;color:var(--text)}
+.agr-actions{display:flex;gap:10px}
+.agr-actions .btn{flex:1;min-height:44px;padding:12px 20px;font-size:15px}
+  </style>
+  <meta name="theme-color" content="#3dd68c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+</head>
+<body>
+  <!-- ★ 使用须知弹窗 -->
+  <div id="agreement-screen">
+    <div class="agr-card">
+      <div class="agr-head">
+        <div class="agr-logo">📚</div>
+        <div class="agr-title">使用须知</div>
+        <div class="agr-version">好好学习 · v1.0.2</div>
+      </div>
+      <div class="agr-body">
+        <div class="agr-section">
+          <div class="agr-section-title">📌 关于本应用</div>
+          <p>「好好学习」是一款本地专注学习工具，帮助用户培养专注习惯。所有数据保存在本机，不上传服务器。</p>
+        </div>
+        <div class="agr-section">
+          <div class="agr-section-title">📌 权限用途</div>
+          <ol>
+            <li>摄像头：学习时检测学习姿态</li>
+            <li>麦克风：录制朗读音频</li>
+            <li>存储：保存学习记录</li>
+          </ol>
+          <p style="margin-top:6px;font-size:12px;opacity:.7">均可在系统设置中随时关闭。</p>
+        </div>
+        <div class="agr-section">
+          <div class="agr-section-title">📌 免责声明</div>
+          <ol>
+            <li>本应用按「现状」提供，不对使用效果作任何承诺；</li>
+            <li>检测结果仅供参考，不构成对学习态度的评价；</li>
+            <li>因设备、系统、环境等因素导致检测偏差，开发者不承担责任；</li>
+            <li>请妥善保管管理密码，因泄露造成的损失由用户自行承担。</li>
+          </ol>
+        </div>
+        <div class="agr-section">
+          <div class="agr-section-title">📌 开发者立场</div>
+          <div class="agr-highlight">
+            <b>本应用仅作为辅助工具，不建议以此强制他人使用。</b><br>
+            过度使用监督、惩罚等功能可能带来心理压力。建议多沟通、多鼓励，把工具当作参考而非评判标准。<br><br>
+            <b>身心健康，比任何数据都重要。</b>
+          </div>
+        </div>
+      </div>
+      <div class="agr-foot">
+        <label class="agr-check" for="agr-agree">
+          <input type="checkbox" id="agr-agree">
+          <span>我已阅读并同意以上条款</span>
+        </label>
+        <div class="agr-actions">
+          <button class="btn btn-ghost" id="agr-reject">不同意</button>
+          <button class="btn btn-primary" id="agr-accept" disabled>同意并继续</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="app">
+    <div class="topbar">
+      <div>
+        <div class="title" id="top-title">好好学习</div>
+        <div class="subtitle" id="top-subtitle">今天的我，超棒！</div>
+      </div>
+      <div class="points-pill" id="points-pill">
+        <i class="fa-solid fa-coins"></i>
+        <span id="points-val">0</span>
+      </div>
+    </div>
+    <main class="screen" id="screen"></main>
+    <nav class="tabbar" id="tabbar">
+      <div class="tab" data-route="home"><i class="fa-solid fa-book-open-reader"></i><span>学习</span></div>
+      <div class="tab" data-route="shop"><i class="fa-solid fa-store"></i><span>商店</span></div>
+      <div class="tab" data-route="records"><i class="fa-solid fa-clock-rotate-left"></i><span>记录</span></div>
+      <div class="tab" data-route="me"><i class="fa-solid fa-user"></i><span>我的</span></div>
+    </nav>
+  </div>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.14/dist/face-api.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <script>
+// =====================================================================
+// 全局工具
+// =====================================================================
+function escHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+const KEYS = {
+  PROFILE:'gb_profile',CONFIG:'gb_config',PRODUCTS:'gb_products',SESSIONS:'gb_sessions',
+  BALANCE:'gb_balance',READING_MATERIALS:'gb_reading_materials',READING_RECORDS:'gb_reading_records',
+  MATH_RECORDS:'gb_math_records',REDEMPTIONS:'gb_redemptions',
+};
+
+const AGREEMENT_VERSION = '1.0.2';
+const AGREEMENT_KEY = 'gb_agreement_v';
+
+const DEFAULT_PWD = 'iamadministrator';
+const DEFAULT_CONFIG = {
+  pwd: DEFAULT_PWD, rewardPPM: 8, penaltyPer: 5, challengeDurations: [15, 25, 45],
+  absenceThr: 20, distractThr: 12, detectInterval: 1000, snapCap: 50,
+  childName: '', avatar: 'fa-cat',
+  mathDefaultCount: 10, mathDefaultLevel: 0, mathPointsPerCorrect: 3,
+  mathTimerEnabled: false, mathTimerSeconds: 15,
+  readingApprovedPoints: 8, readingRejectedPenalty: 0,
+};
+const DEFAULT_PRODUCTS = [
+  { id:'p1', name:'看动画片 30 分钟', icon:'fa-tv', price:60, stock:999, claimed:0 },
+  { id:'p2', name:'玩 Switch 1 小时', icon:'fa-gamepad', price:120, stock:999, claimed:0 },
+  { id:'p3', name:'周末加餐甜点', icon:'fa-ice-cream', price:40, stock:999, claimed:0 },
+  { id:'p4', name:'去公园玩', icon:'fa-tree', price:80, stock:999, claimed:0 },
+  { id:'p5', name:'买一本新书', icon:'fa-book', price:100, stock:999, claimed:0 },
+];
+const DEFAULT_READING_MATERIALS = [
+  { id:'rm1', type:'zh-poem', title:'静夜思', author:'李白', content:'床前明月光，疑是地上霜。举头望明月，低头思故乡。' },
+  { id:'rm2', type:'zh-poem', title:'春晓', author:'孟浩然', content:'春眠不觉晓，处处闻啼鸟。夜来风雨声，花落知多少。' },
+  { id:'rm3', type:'zh-poem', title:'登鹳雀楼', author:'王之涣', content:'白日依山尽，黄河入海流。欲穷千里目，更上一层楼。' },
+  { id:'rm4', type:'zh-text', title:'小猫钓鱼', author:'课文', content:'老猫和小猫一块儿在河边钓鱼。一只蜻蜓飞来了。小猫看见了，放下钓鱼竿，就去捉蜻蜓。' },
+  { id:'rm5', type:'en-article', title:'My Pet', author:'', content:'Hello, my name is Tom. I have a little cat. It is white and black. I love my pet very much.' },
+  { id:'rm6', type:'en-words', title:'Daily Words', author:'', content:'apple, banana, cat, dog, elephant, fish, girl, happy, ice, juice' },
+];
+const MATH_LEVELS = [
+  { key:'basic', label:'基本', desc:'百以内加减法' },
+  { key:'intermediate', label:'进阶', desc:'百以内加减乘除' },
+  { key:'advanced', label:'提升', desc:'万以内加减乘除' },
+  { key:'hard', label:'高级', desc:'万以内带括号混合' },
+  { key:'premium', label:'提优', desc:'带X的一元一次方程' },
+];
+
+// =====================================================================
+// Agreement - 使用须知
+// =====================================================================
+const Agreement = {
+  isAccepted() {
+    try { return localStorage.getItem(AGREEMENT_KEY) === AGREEMENT_VERSION; }
+    catch (e) { return false; }
+  },
+  accept() {
+    try { localStorage.setItem(AGREEMENT_KEY, AGREEMENT_VERSION); } catch (e) {}
+  },
+  show(onAccept) {
+    const screen = document.getElementById('agreement-screen');
+    const checkbox = document.getElementById('agr-agree');
+    const acceptBtn = document.getElementById('agr-accept');
+    const rejectBtn = document.getElementById('agr-reject');
+
+    checkbox.checked = false;
+    acceptBtn.disabled = true;
+
+    checkbox.onchange = () => { acceptBtn.disabled = !checkbox.checked; };
+
+    acceptBtn.onclick = () => {
+      this.accept();
+      screen.classList.remove('show');
+      if (typeof onAccept === 'function') onAccept();
+    };
+
+    rejectBtn.onclick = async () => {
+      const yes = await UI.confirm(
+        '确定要退出应用吗？<br>不同意本须知将无法使用任何功能。',
+        '确认退出'
+      );
+      if (!yes) return;
+      try {
+        if (typeof plus !== 'undefined' && plus.runtime && plus.runtime.quit) {
+          plus.runtime.quit();
+          return;
+        }
+      } catch (e) {}
+      UI.toast('请手动关闭页面', 'warn', 3000);
+    };
+
+    screen.classList.add('show');
+  },
+};
+window.Agreement = Agreement;
+
+// =====================================================================
+// Store
+// =====================================================================
+const Store = {
+  MATH_LEVELS,
+  get(key, def) {
+    try { const raw = localStorage.getItem(key); if (raw == null) return def; return JSON.parse(raw); }
+    catch (e) { console.warn('读取失败', key, e); return def; }
+  },
+  set(key, val) {
+    const str = JSON.stringify(val);
+    try { localStorage.setItem(key, str); return true; } catch (e) {}
+    const priority = ['gb_reading_records', 'gb_sessions', 'gb_math_records', 'gb_redemptions'];
+    let guard = 0;
+    while (guard++ < 500) {
+      let removedAny = false;
+      for (const tk of priority) {
+        if (tk === key) continue;
+        let list;
+        try { list = JSON.parse(localStorage.getItem(tk) || '[]'); } catch (e2) { list = []; }
+        if (!Array.isArray(list) || list.length === 0) continue;
+        const old = list.shift();
+        if (typeof IDB !== 'undefined' && old) {
+          if (old.audioKey) IDB.delete(old.audioKey).catch(() => {});
+          if (old.violations) old.violations.forEach(v => { if (v.snapKey) IDB.delete(v.snapKey).catch(() => {}); });
+        }
+        try { localStorage.setItem(tk, JSON.stringify(list)); removedAny = true; }
+        catch (e3) { try { localStorage.removeItem(tk); removedAny = true; } catch (e4) {} }
+        try { localStorage.setItem(key, str); return true; } catch (e5) {}
+      }
+      if (!removedAny) break;
+    }
+    try {
+      for (const tk of priority) if (tk !== key) localStorage.removeItem(tk);
+      localStorage.setItem(key, str); return true;
+    } catch (e6) {
+      console.error('[Store] 写入失败:', key, e6);
+      if (typeof UI !== 'undefined' && UI.toast) UI.toast('存储空间已满', 'error', 3000);
+      return false;
+    }
+  },
+  getProfile() { return this.get(KEYS.PROFILE, null); },
+  saveProfile(p) { return this.set(KEYS.PROFILE, p); },
+  hasProfile() { return !!this.getProfile(); },
+  getConfig() { return Object.assign({}, DEFAULT_CONFIG, this.get(KEYS.CONFIG, {})); },
+  saveConfig(cfg) { return this.set(KEYS.CONFIG, Object.assign({}, DEFAULT_CONFIG, cfg)); },
+  updateConfig(patch) { return this.saveConfig(Object.assign(this.getConfig(), patch)); },
+  getProducts() { return this.get(KEYS.PRODUCTS, DEFAULT_PRODUCTS.slice()); },
+  saveProducts(list) { return this.set(KEYS.PRODUCTS, list); },
+  addProduct(p) { const list = this.getProducts(); p.id = 'p' + Date.now(); list.push(p); this.saveProducts(list); return p; },
+  updateProduct(id, patch) {
+    const list = this.getProducts();
+    const i = list.findIndex(x => x.id === id);
+    if (i >= 0) { list[i] = Object.assign(list[i], patch); this.saveProducts(list); }
+  },
+  removeProduct(id) { this.saveProducts(this.getProducts().filter(x => x.id !== id)); },
+  claimProduct(id) {
+    const list = this.getProducts();
+    const p = list.find(x => x.id === id);
+    if (!p) return null;
+    p.stock = Math.max(0, p.stock - 1);
+    p.claimed = (p.claimed || 0) + 1;
+    this.saveProducts(list); return p;
+  },
+  getBalance() { return this.get(KEYS.BALANCE, { points: 0 }); },
+  getPoints() { return this.getBalance().points; },
+  addPoints(delta) {
+    const b = this.getBalance();
+    b.points = b.points + delta;
+    this.set(KEYS.BALANCE, b);
+    return b.points;
+  },
+  getSessions() { return this.get(KEYS.SESSIONS, []); },
+  addSession(s) {
+    const list = this.getSessions();
+    list.unshift(s);
+    if (list.length > 200) list.length = 200;
+    return this.set(KEYS.SESSIONS, list);
+  },
+  getReadingMaterials() { return this.get(KEYS.READING_MATERIALS, DEFAULT_READING_MATERIALS.slice()); },
+  saveReadingMaterials(list) { return this.set(KEYS.READING_MATERIALS, list); },
+  addReadingMaterial(m) { const list = this.getReadingMaterials(); m.id = 'rm' + Date.now(); list.unshift(m); this.saveReadingMaterials(list); return m; },
+  updateReadingMaterial(id, patch) {
+    const list = this.getReadingMaterials();
+    const i = list.findIndex(x => x.id === id);
+    if (i >= 0) { list[i] = Object.assign(list[i], patch); this.saveReadingMaterials(list); }
+  },
+  removeReadingMaterial(id) { this.saveReadingMaterials(this.getReadingMaterials().filter(x => x.id !== id)); },
+  getReadingRecords() { return this.get(KEYS.READING_RECORDS, []); },
+  saveReadingRecords(list) { return this.set(KEYS.READING_RECORDS, list); },
+  addReadingRecord(r) {
+    this._enforceQuota(4);
+    const list = this.getReadingRecords();
+    r.id = 'rr' + Date.now();
+    r.status = r.status || 'pending';
+    r.createdAt = Date.now();
+    list.unshift(r);
+    if (list.length > 100) {
+      const removed = list.splice(100);
+      removed.forEach(old => { if (old && old.audioKey) IDB.delete(old.audioKey).catch(() => {}); });
+    }
+    return this.set(KEYS.READING_RECORDS, list);
+  },
+  updateReadingRecord(id, patch) {
+    const list = this.getReadingRecords();
+    const i = list.findIndex(x => x.id === id);
+    if (i >= 0) { list[i] = Object.assign(list[i], patch); this.saveReadingRecords(list); }
+  },
+  removeReadingRecord(id) {
+    const list = this.getReadingRecords();
+    const target = list.find(x => x.id === id);
+    if (target && target.audioKey) IDB.delete(target.audioKey).catch(() => {});
+    this.saveReadingRecords(list.filter(x => x.id !== id));
+  },
+  getMathRecords() { return this.get(KEYS.MATH_RECORDS, []); },
+  addMathRecord(r) {
+    const list = this.getMathRecords();
+    r.id = 'mr' + Date.now();
+    r.createdAt = Date.now();
+    list.unshift(r);
+    if (list.length > 200) list.length = 200;
+    return this.set(KEYS.MATH_RECORDS, list);
+  },
+  getRedemptions() { return this.get(KEYS.REDEMPTIONS, []); },
+  saveRedemptions(list) { return this.set(KEYS.REDEMPTIONS, list); },
+  addRedemption(r) {
+    const list = this.getRedemptions();
+    r.id = 'rd' + Date.now();
+    r.createdAt = Date.now();
+    r.status = r.status || 'pending';
+    r.fulfilledAt = null;
+    list.unshift(r);
+    if (list.length > 200) list.length = 200;
+    return this.set(KEYS.REDEMPTIONS, list);
+  },
+  updateRedemption(id, patch) {
+    const list = this.getRedemptions();
+    const i = list.findIndex(x => x.id === id);
+    if (i >= 0) { list[i] = Object.assign(list[i], patch); this.saveRedemptions(list); }
+  },
+  removeRedemption(id) { this.saveRedemptions(this.getRedemptions().filter(x => x.id !== id)); },
+  getStats() {
+    const sessions = this.getSessions();
+    let totalSec = 0, totalPoints = 0, totalViolations = 0;
+    sessions.forEach(s => {
+      totalSec += s.durSec || 0;
+      totalPoints += s.points || 0;
+      totalViolations += (s.violations || []).length;
+    });
+    const mathRecords = this.getMathRecords();
+    let mathPoints = 0, mathCorrect = 0, mathTotal = 0;
+    mathRecords.forEach(r => {
+      mathPoints += r.earnedPoints || 0;
+      mathCorrect += r.correct || 0;
+      mathTotal += r.total || 0;
+    });
+    const reads = this.getReadingRecords();
+    let readingApproved = reads.filter(r => r.status === 'approved').length;
+    return { totalSec, totalPoints, totalViolations, sessionCount: sessions.length,
+             mathPoints, mathCorrect, mathTotal, readingApproved };
+  },
+  updateStreakOnStudy(today) {
+    const profile = this.getProfile();
+    if (!profile) return 0;
+    const last = profile.lastDate;
+    if (last === today) return profile.streak || 0;
+    if (last) {
+      const d1 = new Date(last), d2 = new Date(today);
+      const diff = Math.round((d2 - d1) / 86400000);
+      if (diff === 1) profile.streak = (profile.streak || 0) + 1;
+      else if (diff > 1) profile.streak = 1;
+    } else { profile.streak = 1; }
+    profile.longestStreak = Math.max(profile.longestStreak || 0, profile.streak);
+    profile.lastDate = today;
+    this.saveProfile(profile);
+    return profile.streak || 0;
+  },
+  ensureDefaults() {
+    if (!localStorage.getItem(KEYS.CONFIG)) this.saveConfig(DEFAULT_CONFIG);
+    if (!localStorage.getItem(KEYS.PRODUCTS)) this.saveProducts(DEFAULT_PRODUCTS.slice());
+    if (!localStorage.getItem(KEYS.BALANCE)) this.set(KEYS.BALANCE, { points: 0 });
+    if (!localStorage.getItem(KEYS.READING_MATERIALS)) this.saveReadingMaterials(DEFAULT_READING_MATERIALS.slice());
+  },
+  _estimateSize() {
+    let total = 0;
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        const v = localStorage.getItem(k) || '';
+        total += k.length + v.length;
+      }
+    } catch (e) {}
+    return total * 2;
+  },
+  _enforceQuota(thresholdMB = 4) {
+    const limit = thresholdMB * 1024 * 1024;
+    let guard = 0;
+    while (this._estimateSize() > limit && guard++ < 200) {
+      let removed = false;
+      const reads = this.getReadingRecords();
+      if (reads.length > 1) {
+        const old = reads.shift();
+        if (old && old.audioKey && typeof IDB !== 'undefined') IDB.delete(old.audioKey).catch(() => {});
+        this.saveReadingRecords(reads); removed = true; continue;
+      }
+      const sessions = this.getSessions();
+      if (sessions.length > 1) {
+        const old = sessions.shift();
+        if (old && old.violations && typeof IDB !== 'undefined') {
+          old.violations.forEach(v => { if (v.snapKey) IDB.delete(v.snapKey).catch(() => {}); });
+        }
+        this.set(KEYS.SESSIONS, sessions); removed = true; continue;
+      }
+      const math = this.getMathRecords();
+      if (math.length > 1) { math.shift(); this.set(KEYS.MATH_RECORDS, math); removed = true; continue; }
+      const reds = this.getRedemptions();
+      if (reds.length > 1) { reds.shift(); this.saveRedemptions(reds); removed = true; continue; }
+      if (!removed) break;
+    }
+  },
+  resetAll() {
+    Object.values(KEYS).forEach(k => localStorage.removeItem(k));
+    if (typeof IDB !== 'undefined') IDB.clear().catch(() => {});
+    this.ensureDefaults();
+  },
+};
+
+Store.ensureDefaults();
+window.Store = Store;
+
+// =====================================================================
+// IDB
+// =====================================================================
+const IDB = {
+  _db: null, DB_NAME: 'gb_storage', DB_VER: 1, STORE: 'blobs',
+  _open() {
+    if (this._db) return Promise.resolve(this._db);
+    return new Promise((resolve, reject) => {
+      if (typeof indexedDB === 'undefined') { reject(new Error('IndexedDB 不可用')); return; }
+      const req = indexedDB.open(this.DB_NAME, this.DB_VER);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(this.STORE)) db.createObjectStore(this.STORE);
+      };
+      req.onsuccess = (e) => { this._db = e.target.result; resolve(this._db); };
+      req.onerror = (e) => reject(e.target.error);
+    });
+  },
+  async put(key, value) {
+    try {
+      const db = await this._open();
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(this.STORE, 'readwrite');
+        tx.objectStore(this.STORE).put(value, key);
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = (e) => reject(e.target.error);
+      });
+    } catch (e) { console.warn('[IDB] put 失败', key, e); return false; }
+  },
+  async get(key) {
+    try {
+      const db = await this._open();
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(this.STORE, 'readonly');
+        const req = tx.objectStore(this.STORE).get(key);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = (e) => reject(e.target.error);
+      });
+    } catch (e) { console.warn('[IDB] get 失败', key, e); return null; }
+  },
+  async delete(key) {
+    try {
+      const db = await this._open();
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(this.STORE, 'readwrite');
+        tx.objectStore(this.STORE).delete(key);
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = (e) => reject(e.target.error);
+      });
+    } catch (e) { return false; }
+  },
+  async clear() {
+    try {
+      const db = await this._open();
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(this.STORE, 'readwrite');
+        tx.objectStore(this.STORE).clear();
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = (e) => reject(e.target.error);
+      });
+    } catch (e) { return false; }
+  },
+  async estimateSize() {
+    try {
+      const db = await this._open();
+      return await new Promise((resolve) => {
+        const tx = db.transaction(this.STORE, 'readonly');
+        const store = tx.objectStore(this.STORE);
+        let total = 0;
+        const req = store.openCursor();
+        req.onsuccess = (e) => {
+          const cursor = e.target.result;
+          if (cursor) {
+            if (cursor.value && cursor.value.size) total += cursor.value.size;
+            cursor.continue();
+          } else resolve(total);
+        };
+        req.onerror = () => resolve(0);
+      });
+    } catch (e) { return 0; }
+  },
+};
+window.IDB = IDB;
+
+async function hydrateBlobs(root) {
+  if (!root) return;
+  const audios = root.querySelectorAll('audio[data-audio-key]');
+  for (const el of audios) {
+    const key = el.dataset.audioKey;
+    if (!key) continue;
+    const blob = await IDB.get(key);
+    if (blob) { try { const url = URL.createObjectURL(blob); el.src = url; el._blobUrl = url; } catch (e) {} }
+  }
+  const imgs = root.querySelectorAll('img[data-snap-key]');
+  for (const el of imgs) {
+    const key = el.dataset.snapKey;
+    if (!key) continue;
+    const blob = await IDB.get(key);
+    if (blob) { try { const url = URL.createObjectURL(blob); el.src = url; el._blobUrl = url; } catch (e) {} }
+    else {
+      const ph = document.createElement('div');
+      ph.className = 'no-snap';
+      ph.innerHTML = '<i class="fa-solid fa-image-slash"></i>';
+      el.replaceWith(ph);
+    }
+  }
+}
+
+function revokeBlobUrls(root) {
+  if (!root) return;
+  root.querySelectorAll('audio,img').forEach(el => {
+    if (el._blobUrl) { try { URL.revokeObjectURL(el._blobUrl); } catch (e) {} el._blobUrl = null; }
+  });
+}
+
+// =====================================================================
+// Permission
+// =====================================================================
+const Permission = {
+  CAMERA: 'android.permission.CAMERA',
+  MIC: 'android.permission.RECORD_AUDIO',
+  AUDIO_SETTINGS: 'android.permission.MODIFY_AUDIO_SETTINGS',
+  isApp() { return typeof plus !== 'undefined' && plus.os.name === 'Android'; },
+  isIOS() { return typeof plus !== 'undefined' && plus.os.name === 'iOS'; },
+  getPackageName() { try { return plus.runtime.appid || plus.runtime.packageName || ''; } catch (e) { return ''; } },
+  request(permissions) {
+    return new Promise((resolve) => {
+      if (!this.isApp()) { resolve({ granted: ['browser'], deniedPresent: [], deniedAlways: [] }); return; }
+      const perms = Array.isArray(permissions) ? permissions : [permissions];
+      plus.android.requestPermissions(perms,
+        (resultObj) => resolve({
+          granted: resultObj.granted || [],
+          deniedPresent: resultObj.deniedPresent || [],
+          deniedAlways: resultObj.deniedAlways || [],
+        }),
+        (error) => { console.error('[Permission] 申请出错:', error); resolve({ granted: [], deniedPresent: perms, deniedAlways: [], error }); }
+      );
+    });
+  },
+  async ensure(permissions, purposeText) {
+    if (!this.isApp()) return true;
+    const result = await this.request(permissions);
+    if (result.granted.length > 0) return true;
+    if (result.deniedPresent.length > 0) {
+      const retry = await UI.confirm(`${purposeText || '此功能'}需要该权限才能使用。<br>是否重新授权？`, '需要权限');
+      if (retry) {
+        const second = await this.request(result.deniedPresent);
+        if (second.granted.length > 0) return true;
+        return await this._guideToSettings(purposeText);
+      }
+      return false;
+    }
+    if (result.deniedAlways.length > 0) return await this._guideToSettings(purposeText);
+    return false;
+  },
+  async _guideToSettings(purposeText) {
+    const go = await UI.confirm(`${purposeText || '此功能'}需要相关权限。<br><br>请点击「去设置」，在权限管理中手动开启。`, '权限被拒绝');
+    if (!go) return false;
+    this.openSettings();
+    return false;
+  },
+  openSettings() {
+    try {
+      if (this.isApp()) {
+        const pkg = this.getPackageName();
+        if (pkg) plus.runtime.openURL('package:' + pkg);
+        else plus.runtime.openURL('android.settings.APPLICATION_DETAILS_SETTINGS');
+      } else if (this.isIOS()) { plus.runtime.openURL('app-settings:'); }
+      else { UI.toast('请在浏览器设置中允许麦克风/摄像头权限', 'warn', 4000); }
+    } catch (e) {
+      console.error('[Permission] 跳转设置失败:', e);
+      UI.toast('无法跳转设置，请手动进入系统设置开启权限', 'warn');
+    }
+  },
+  async ensureMic(purposeText) { return this.ensure([this.MIC, this.AUDIO_SETTINGS], purposeText || '录音功能'); },
+  async ensureCamera(purposeText) { return this.ensure(this.CAMERA, purposeText || '摄像头功能'); },
+};
+window.Permission = Permission;
+
+// =====================================================================
+// UI
+// =====================================================================
+const UI = {
+  _ac: null,
+  _audioCtx() {
+    if (!this._ac) { try { this._ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; } }
+    return this._ac;
+  },
+  beep(freq = 880, dur = 0.3, type = 'square', gain = 0.2) {
+    const ac = this._audioCtx();
+    if (!ac) return;
+    try {
+      const o = ac.createOscillator(); const g = ac.createGain();
+      o.type = type; o.frequency.value = freq; g.gain.value = gain;
+      o.connect(g); g.connect(ac.destination);
+      const now = ac.currentTime; o.start(now);
+      g.gain.setValueAtTime(gain, now); g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+      o.stop(now + dur);
+    } catch (e) {}
+  },
+  alarm() { this.beep(660,0.18); setTimeout(()=>this.beep(440,0.18),200); setTimeout(()=>this.beep(660,0.18),400); setTimeout(()=>this.beep(880,0.4),620); },
+  success() { this.beep(523,0.1); setTimeout(()=>this.beep(659,0.1),120); setTimeout(()=>this.beep(784,0.2),240); },
+  click() { this.beep(1000,0.05,'square',0.08); },
+  toast(msg, type = 'info', dur = 2200) {
+    let wrap = document.getElementById('toast-wrap');
+    if (!wrap) { wrap = document.createElement('div'); wrap.id = 'toast-wrap'; document.body.appendChild(wrap); }
+    const el = document.createElement('div');
+    el.className = 'toast toast-' + type;
+    const iconMap = { success: 'fa-check-circle', error: 'fa-circle-exclamation', warn: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+    el.innerHTML = `<i class="fa-solid ${iconMap[type] || iconMap.info}"></i><span>${escHtml(msg)}</span>`;
+    wrap.appendChild(el);
+    requestAnimationFrame(() => el.classList.add('show'));
+    setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, dur);
+  },
+  floatPoints(delta, x, y) {
+    const el = document.createElement('div');
+    el.className = 'float-points ' + (delta >= 0 ? 'pos' : 'neg');
+    el.textContent = (delta >= 0 ? '+' : '') + delta;
+    el.style.left = x + 'px'; el.style.top = y + 'px';
+    document.body.appendChild(el);
+    requestAnimationFrame(() => el.classList.add('fly'));
+    setTimeout(() => el.remove(), 1100);
+  },
+  pulseRed() {
+    let v = document.getElementById('red-pulse');
+    if (!v) { v = document.createElement('div'); v.id = 'red-pulse'; document.body.appendChild(v); }
+    v.classList.remove('active'); void v.offsetWidth; v.classList.add('active');
+    setTimeout(() => v.classList.remove('active'), 1200);
+  },
+  confetti(count = 80) {
+    if (typeof window.confetti === 'function') {
+      window.confetti({ particleCount: count, spread: 70, origin: { y: 0.6 } });
+      return;
+    }
+    let wrap = document.getElementById('confetti-wrap');
+    if (!wrap) { wrap = document.createElement('div'); wrap.id = 'confetti-wrap'; document.body.appendChild(wrap); }
+    const colors = ['#3dd68c','#37b6ff','#ff9f43','#ffd166','#ff5e5e','#a78bfa'];
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'confetti-piece';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.background = colors[i % colors.length];
+      p.style.animationDelay = (Math.random() * 0.3) + 's';
+      p.style.animationDuration = (1.2 + Math.random() * 0.8) + 's';
+      const r = Math.random();
+      p.style.width = p.style.height = (6 + r * 8) + 'px';
+      if (Math.random() > 0.5) p.style.borderRadius = '50%';
+      wrap.appendChild(p); setTimeout(() => p.remove(), 2200);
+    }
+  },
+  badge(title, desc, icon = 'fa-trophy') {
+    return new Promise(resolve => {
+      const mask = document.createElement('div');
+      mask.className = 'badge-mask';
+      mask.innerHTML = `
+        <div class="badge-card">
+          <div class="badge-icon"><i class="fa-solid ${icon}"></i></div>
+          <div class="badge-title">${title}</div>
+          <div class="badge-desc">${desc}</div>
+          <button class="btn btn-primary badge-ok">太棒了</button>
+        </div>`;
+      document.body.appendChild(mask);
+      requestAnimationFrame(() => mask.classList.add('show'));
+      mask.querySelector('.badge-ok').onclick = () => {
+        mask.classList.remove('show');
+        setTimeout(() => { mask.remove(); resolve(); }, 300);
+      };
+    });
+  },
+  confirm(msg, title = '提示') {
+    return new Promise(resolve => {
+      const mask = document.createElement('div');
+      mask.className = 'modal-mask';
+      mask.innerHTML = `
+        <div class="modal-card">
+          <div class="modal-title">${escHtml(title)}</div>
+          <div class="modal-body">${msg}</div>
+          <div class="modal-actions">
+            <button class="btn btn-ghost modal-cancel">取消</button>
+            <button class="btn btn-primary modal-ok">确定</button>
+          </div>
+        </div>`;
+      document.body.appendChild(mask);
+      requestAnimationFrame(() => mask.classList.add('show'));
+      const close = (v) => { mask.classList.remove('show'); setTimeout(() => { mask.remove(); resolve(v); }, 300); };
+      mask.querySelector('.modal-cancel').onclick = () => close(false);
+      mask.querySelector('.modal-ok').onclick = () => close(true);
+      mask.onclick = (e) => { if (e.target === mask) close(false); };
+    });
+  },
+  promptPassword(title = '请输入密码') {
+    return new Promise(resolve => {
+      const mask = document.createElement('div');
+      mask.className = 'modal-mask';
+      mask.innerHTML = `
+        <div class="modal-card">
+          <div class="modal-title"><i class="fa-solid fa-lock"></i> ${escHtml(title)}</div>
+          <input class="modal-input" type="password" placeholder="管理密码" autocomplete="off"/>
+          <div class="modal-actions">
+            <button class="btn btn-ghost modal-cancel">取消</button>
+            <button class="btn btn-primary modal-ok">进入</button>
+          </div>
+        </div>`;
+      document.body.appendChild(mask);
+      requestAnimationFrame(() => mask.classList.add('show'));
+      const input = mask.querySelector('.modal-input');
+      setTimeout(() => input.focus(), 50);
+      const close = (v) => { mask.classList.remove('show'); setTimeout(() => { mask.remove(); resolve(v); }, 300); };
+      mask.querySelector('.modal-cancel').onclick = () => close(null);
+      mask.querySelector('.modal-ok').onclick = () => close(input.value);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') close(input.value); if (e.key === 'Escape') close(null); });
+    });
+  },
+  promptText(title, placeholder = '', def = '', multiline = false) {
+    return new Promise(resolve => {
+      const mask = document.createElement('div');
+      mask.className = 'modal-mask';
+      const safeTitle = escHtml(title), safePh = escHtml(placeholder), safeDef = escHtml(def);
+      const inputHtml = multiline
+        ? `<textarea class="modal-input modal-textarea" placeholder="${safePh}" rows="6">${safeDef}</textarea>`
+        : `<input class="modal-input" type="text" placeholder="${safePh}" value="${safeDef}"/>`;
+      mask.innerHTML = `
+        <div class="modal-card" style="${multiline ? 'max-width:460px' : ''}">
+          <div class="modal-title">${safeTitle}</div>
+          ${inputHtml}
+          <div class="modal-actions">
+            <button class="btn btn-ghost modal-cancel">取消</button>
+            <button class="btn btn-primary modal-ok">确定</button>
+          </div>
+        </div>`;
+      document.body.appendChild(mask);
+      requestAnimationFrame(() => mask.classList.add('show'));
+      const input = mask.querySelector('.modal-input');
+      setTimeout(() => { input.focus(); if (!multiline) input.select(); }, 50);
+      const close = (v) => { mask.classList.remove('show'); setTimeout(() => { mask.remove(); resolve(v); }, 300); };
+      mask.querySelector('.modal-cancel').onclick = () => close(null);
+      mask.querySelector('.modal-ok').onclick = () => close(input.value);
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { close(null); return; }
+        if (!multiline && e.key === 'Enter') close(input.value);
+      });
+    });
+  },
+  renderRing(container, progress, opts = {}) {
+    const size = opts.size || 220, stroke = opts.stroke || 18;
+    const r = (size - stroke) / 2, cx = size / 2, c = 2 * Math.PI * r;
+    const off = c * (1 - Math.max(0, Math.min(1, progress)));
+    const gradId = 'ring-grad-' + Math.random().toString(36).slice(2, 8);
+    const color = opts.color || 'url(#' + gradId + ')';
+    container.innerHTML = `
+      <svg class="ring-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+        <defs>
+          <linearGradient id="${gradId}" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3dd68c"/>
+            <stop offset="100%" stop-color="#37b6ff"/>
+          </linearGradient>
+        </defs>
+        <circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="#e8edf5" stroke-width="${stroke}"/>
+        <circle class="ring-fg" cx="${cx}" cy="${cx}" r="${r}" fill="none"
+                stroke="${color}" stroke-width="${stroke}" stroke-linecap="round"
+                stroke-dasharray="${c}" stroke-dashoffset="${off}"
+                transform="rotate(-90 ${cx} ${cx})"/>
+        <text class="ring-label" x="${cx}" y="${cx - 4}" text-anchor="middle">${escHtml(opts.label || '')}</text>
+        <text class="ring-sub" x="${cx}" y="${cx + 24}" text-anchor="middle">${escHtml(opts.sublabel || '')}</text>
+      </svg>`;
+    return container.querySelector('.ring-fg');
+  },
+  updateRing(container, progress, opts = {}) {
+    const ring = container.querySelector('.ring-fg');
+    if (!ring) return;
+    const size = opts.size || 220, stroke = opts.stroke || 18;
+    const r = (size - stroke) / 2, c = 2 * Math.PI * r;
+    const off = c * (1 - Math.max(0, Math.min(1, progress)));
+    ring.style.strokeDashoffset = off;
+    if (opts.color) ring.setAttribute('stroke', opts.color);
+    const label = container.querySelector('.ring-label');
+    const sub = container.querySelector('.ring-sub');
+    if (label && opts.label) label.textContent = opts.label;
+    if (sub && opts.sublabel) sub.textContent = opts.sublabel;
+  },
+  fmtTime(sec) {
+    sec = Math.max(0, Math.floor(sec));
+    const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+    const pad = n => String(n).padStart(2, '0');
+    if (h > 0) return `${h}:${pad(m)}:${pad(s)}`;
+    return `${pad(m)}:${pad(s)}`;
+  },
+  fmtDur(sec) {
+    if (sec < 60) return sec + ' 秒';
+    const m = Math.floor(sec / 60);
+    if (m < 60) return m + ' 分钟';
+    const h = Math.floor(m / 60);
+    return h + ' 小时 ' + (m % 60) + ' 分';
+  },
+  fmtDate(ts) {
+    const d = new Date(ts);
+    const Y = d.getFullYear(), M = String(d.getMonth()+1).padStart(2,'0'), D = String(d.getDate()).padStart(2,'0');
+    const hh = String(d.getHours()).padStart(2,'0'), mm = String(d.getMinutes()).padStart(2,'0');
+    return `${Y}-${M}-${D} ${hh}:${mm}`;
+  },
+  fmtDay(ts) { const d = new Date(ts); return `${d.getMonth()+1}月${d.getDate()}日`; },
+};
+window.UI = UI;
+
+// =====================================================================
+// MathEngine
+// =====================================================================
+window.MathEngine = {
+  generate(levelIndex, count) {
+    const levels = Store.MATH_LEVELS;
+    const level = levels[levelIndex] || levels[0];
+    const generator = this['_gen_' + level.key] || this._gen_basic;
+    const out = [];
+    for (let i = 0; i < count; i++) out.push(generator.call(this));
+    return out;
+  },
+  _gen_basic() {
+    const ops = ['+', '-']; const op = ops[Math.floor(Math.random() * 2)];
+    let a, b, ans;
+    if (op === '+') { a = this._ri(1, 100); b = this._ri(1, 100); ans = a + b; }
+    else { a = this._ri(10, 100); b = this._ri(1, a); ans = a - b; }
+    return { q: `${a} ${op} ${b}`, a: ans };
+  },
+  _gen_intermediate() {
+    const r = Math.random(); let op, a, b, ans;
+    if (r < 0.45) { op='+'; a=this._ri(1,100); b=this._ri(1,100); ans=a+b; }
+    else if (r < 0.7) { op='-'; a=this._ri(10,100); b=this._ri(1,a); ans=a-b; }
+    else if (r < 0.9) { op='×'; a=this._ri(2,12); b=this._ri(2,12); ans=a*b; }
+    else { b=this._ri(2,12); ans=this._ri(2,12); a=b*ans; op='÷'; }
+    return { q: `${a} ${op} ${b}`, a: ans };
+  },
+  _gen_advanced() {
+    const r = Math.random(); let op, a, b, ans;
+    if (r < 0.4) { op='+'; a=this._ri(100,9999); b=this._ri(100,9999); ans=a+b; }
+    else if (r < 0.7) { op='-'; a=this._ri(500,9999); b=this._ri(100,a); ans=a-b; }
+    else if (r < 0.88) { op='×'; a=this._ri(2,50); b=this._ri(2,50); ans=a*b; }
+    else { b=this._ri(2,30); ans=this._ri(2,50); a=b*ans; op='÷'; }
+    return { q: `${a} ${op} ${b}`, a: ans };
+  },
+  _gen_hard() {
+    const count = 3 + Math.floor(Math.random() * 3);
+    const ops = ['+', '-', '×'];
+    const nums = [], opList = [];
+    for (let i = 0; i < count; i++) {
+      nums.push(this._ri(1, 500));
+      if (i < count - 1) opList.push(ops[Math.floor(Math.random() * 3)]);
+    }
+    let bracketStart, bracketEnd;
+    let hasMul = opList.some(o => o === '×');
+    if (hasMul && count >= 3) {
+      const mulIdx = opList.indexOf('×');
+      bracketStart = Math.max(0, mulIdx);
+      bracketEnd = Math.min(count - 1, mulIdx + 2);
+    } else {
+      bracketStart = Math.floor(Math.random() * (count - 1));
+      bracketEnd = Math.min(count - 1, bracketStart + 1 + Math.floor(Math.random() * 2));
+    }
+    let exprArr = [];
+    for (let i = 0; i < count; i++) {
+      if (i === bracketStart) exprArr.push('(');
+      exprArr.push(String(nums[i]));
+      if (i === bracketEnd) exprArr.push(')');
+      if (i < count - 1) exprArr.push(opList[i]);
+    }
+    const expr = exprArr.join(' ');
+    return { q: expr, a: this._safeEval(expr) };
+  },
+  _gen_premium() {
+    const x = this._ri(2, 30);
+    const forms = [
+      () => { const b = this._ri(2,20); return { q:`x + ${b} = ${x+b}`, a:x }; },
+      () => { const b = this._ri(1,20); return { q:`x - ${b} = ${x-b}`, a:x }; },
+      () => { const a = this._ri(2,9); return { q:`${a}x = ${a*x}`, a:x }; },
+      () => { const a = this._ri(2,9); const b = this._ri(1,15); return { q:`${a}x + ${b} = ${a*x+b}`, a:x }; },
+      () => { const a = this._ri(2,9); const b = this._ri(1,15); return { q:`${a}x - ${b} = ${a*x-b}`, a:x }; },
+    ];
+    return forms[Math.floor(Math.random() * forms.length)]();
+  },
+  _ri(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; },
+  _safeEval(expr) {
+    const s = expr.replace(/\s+/g, '');
+    if (!/^[0-9+\-×÷()]+$/.test(s)) return 0;
+    const normalized = s.replace(/×/g, '*').replace(/÷/g, '/');
+    try { return Function(`"use strict"; return (${normalized});`)(); } catch (e) { return 0; }
+  },
+};
+
+// =====================================================================
+// ReadingRecorder
+// =====================================================================
+window.ReadingRecorder = class ReadingRecorder {
+  constructor(callbacks = {}) {
+    this.cb = callbacks; this.mediaRecorder = null; this.chunks = []; this.stream = null;
+    this.startAt = 0; this.timerId = null; this._finalizeResolve = null; this._lastResult = null;
+  }
+  get supported() { return !!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia && !!window.MediaRecorder; }
+  async start() {
+    if (!this.supported) throw new Error('当前浏览器不支持录音功能');
+    this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mimes = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus', 'audio/mp4'];
+    let mime = '';
+    for (const m of mimes) { if (MediaRecorder.isTypeSupported(m)) { mime = m; break; } }
+    this.mediaRecorder = mime ? new MediaRecorder(this.stream, { mimeType: mime }) : new MediaRecorder(this.stream);
+    this.chunks = []; this._lastResult = null;
+    this.mediaRecorder.ondataavailable = (e) => { if (e.data && e.data.size > 0) this.chunks.push(e.data); };
+    this.mediaRecorder.onstop = () => this._handleStop();
+    this.mediaRecorder.start(200);
+    this.startAt = Date.now();
+    if (this.cb.onStart) this.cb.onStart();
+    this.timerId = setInterval(() => { if (this.cb.onTick) this.cb.onTick((Date.now() - this.startAt) / 1000); }, 250);
+  }
+  async stop() {
+    if (!this.mediaRecorder) return this._lastResult;
+    if (this.mediaRecorder.state === 'inactive') return this._lastResult;
+    this.mediaRecorder.stop();
+    this._cleanupStream();
+    if (this.timerId) { clearInterval(this.timerId); this.timerId = null; }
+    return new Promise(resolve => {
+      this._finalizeResolve = resolve;
+      setTimeout(() => {
+        if (this._finalizeResolve === resolve) {
+          this._finalizeResolve = null; this._handleStop(); resolve(this._lastResult);
+        }
+      }, 3000);
+    });
+  }
+  _handleStop() {
+    const duration = (Date.now() - this.startAt) / 1000;
+    const type = (this.mediaRecorder && this.mediaRecorder.mimeType) || 'audio/webm';
+    const blob = new Blob(this.chunks, { type });
+    this._blobToBase64(blob).then(base64 => {
+      const result = { base64, blob, duration, mime: blob.type, size: blob.size };
+      this._lastResult = result;
+      if (this.cb.onStop) this.cb.onStop(result);
+      if (this._finalizeResolve) { const r = this._finalizeResolve; this._finalizeResolve = null; r(result); }
+    });
+  }
+  _cleanupStream() { if (this.stream) { this.stream.getTracks().forEach(t => t.stop()); this.stream = null; } }
+  async cancel() {
+    if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
+      this.mediaRecorder.onstop = null;
+      try { this.mediaRecorder.stop(); } catch (e) {}
+    }
+    this._cleanupStream();
+    if (this.timerId) { clearInterval(this.timerId); this.timerId = null; }
+    this.chunks = [];
+    if (this._finalizeResolve) { const r = this._finalizeResolve; this._finalizeResolve = null; r(null); }
+  }
+  _blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+};
+
+// =====================================================================
+// Detect
+// =====================================================================
+const Detect = {
+  video: null, canvas: null, stream: null, running: false, modelsLoaded: false,
+  loadingPromise: null, degradeMode: false, absent: 0, distract: 0, status: 'idle',
+  onStatusChange: null, onViolation: null, cfg: null,
+  MODEL_URL: 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.14/model/',
+  LOCAL_MODEL_URL: 'assets/models/',
+  async loadModels() {
+    if (this.modelsLoaded) return true;
+    if (this.loadingPromise) return this.loadingPromise;
+    const promise = (async () => {
+      if (typeof faceapi === 'undefined') { console.warn('face-api.js 未加载'); this.degradeMode = true; return false; }
+      const tryLoad = async (url) => {
+        try {
+          await Promise.all([
+            faceapi.nets.tinyFaceDetector.load(url),
+            faceapi.nets.faceLandmark68TinyNet.load(url),
+            faceapi.nets.faceExpressionNet.load(url),
+          ]);
+          return true;
+        } catch (e) { console.warn('模型加载失败', url, e); return false; }
+      };
+      let ok = await tryLoad(this.MODEL_URL);
+      if (!ok) ok = await tryLoad(this.LOCAL_MODEL_URL);
+      if (!ok) { this.degradeMode = true; return false; }
+      this.modelsLoaded = true; this.degradeMode = false;
+      return true;
+    })();
+    this.loadingPromise = promise;
+    promise.then(ok => { if (!ok) this.loadingPromise = null; });
+    return promise;
+  },
+  async startCamera() {
+    try {
+      this.stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
+        audio: false,
+      });
+      this.video.srcObject = this.stream;
+      await this.video.play();
+      return { ok: true };
+    } catch (e) { console.warn('摄像头无法启动', e); return { ok: false, error: e }; }
+  },
+  stopCamera() {
+    this.running = false;
+    if (this.stream) { this.stream.getTracks().forEach(t => t.stop()); this.stream = null; }
+    if (this.video) this.video.srcObject = null;
+  },
+  async start(video, cfg, callbacks) {
+    if (this.running) { try { this.stop(); } catch (e) {} }
+    this.video = video; this.cfg = cfg;
+    this.onStatusChange = callbacks.onStatusChange || null;
+    this.onViolation = callbacks.onViolation || null;
+    this.absent = 0; this.distract = 0; this.status = 'idle';
+    await this.loadModels();
+    if (this.degradeMode && this.onStatusChange) this.onStatusChange('degraded');
+    const cam = await this.startCamera();
+    if (!cam.ok) {
+      if (this.onStatusChange) this.onStatusChange('nocamera');
+      return { ok: false, error: cam.error, degrade: this.degradeMode };
+    }
+    this.running = true;
+    if (this.onStatusChange) this.onStatusChange('focusing');
+    this._tick();
+    return { ok: true, degrade: this.degradeMode };
+  },
+  stop() { this.stopCamera(); this.status = 'idle'; },
+  async _tick() {
+    if (!this.running) return;
+    if (document.hidden) { setTimeout(() => this._tick(), 1000); return; }
+    if (this.degradeMode) { setTimeout(() => this._tick(), this.cfg.detectInterval); return; }
+    try {
+      const opt = new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.5 });
+      const result = await faceapi
+        .detectSingleFace(this.video, opt)
+        .withFaceLandmarks(true)
+        .withFaceExpressions();
+      if (!result) {
+        this.absent += Math.round(this.cfg.detectInterval / 1000);
+        this.distract = 0;
+        this._setStatus('absent');
+        if (this.absent >= this.cfg.absenceThr) { this.absent = 0; this._triggerViolation('离座'); }
+      } else {
+        this.absent = 0;
+        const judge = this._judgePose(result);
+        if (judge && judge.severity === 'violation') {
+          this.distract += Math.round(this.cfg.detectInterval / 1000);
+          this._setStatus('distract');
+          if (this.distract >= this.cfg.distractThr) { this.distract = 0; this._triggerViolation(judge.type); }
+        } else if (judge && judge.severity === 'notice') {
+          this.distract = 0; this._setStatus('noticing');
+        } else {
+          this.distract = 0; this._setStatus('focusing');
+        }
+      }
+    } catch (e) { console.warn('检测异常', e); }
+    setTimeout(() => this._tick(), this.cfg.detectInterval);
+  },
+  _judgePose(result) {
+    const lm = result.landmarks.positions;
+    if (!lm || lm.length < 68) return null;
+    const noseY = lm[30].y;
+    const eyeMid = (lm[36].y + lm[45].y) / 2;
+    const faceH = result.detection.box.height;
+    if (faceH <= 0) return null;
+    const downRatio = (noseY - eyeMid) / faceH;
+    const leftD = Math.abs(lm[27].x - lm[36].x);
+    const rightD = Math.abs(lm[45].x - lm[27].x);
+    const sideRatio = Math.abs(leftD - rightD) / (leftD + rightD + 0.001);
+    const expr = result.expressions;
+    const neutral = expr ? expr.neutral : 0;
+    if (neutral > 0.85 && downRatio > 0.55) return { type: '趴桌睡觉', severity: 'violation' };
+    if (sideRatio > 0.40) return { type: '东张西望', severity: 'violation' };
+    if (downRatio > 0.42) return { type: '低头学习中', severity: 'notice' };
+    return null;
+  },
+  _setStatus(s) {
+    if (this.status === s) return;
+    this.status = s;
+    if (this.onStatusChange) this.onStatusChange(s);
+  },
+  _triggerViolation(type) {
+    const snap = this._snapshot();
+    if (this.onViolation) this.onViolation(type, snap);
+  },
+  _snapshot() {
+    try {
+      if (!this.video || !this.video.videoWidth) return null;
+      const vw = this.video.videoWidth, vh = this.video.videoHeight;
+      const scale = 480 / Math.max(vw, vh);
+      const w = Math.round(vw * scale), h = Math.round(vh * scale);
+      if (!this.canvas) this.canvas = document.createElement('canvas');
+      this.canvas.width = w; this.canvas.height = h;
+      const ctx = this.canvas.getContext('2d');
+      ctx.translate(w, 0); ctx.scale(-1, 1);
+      ctx.drawImage(this.video, 0, 0, w, h);
+      const base64 = this.canvas.toDataURL('image/jpeg', 0.5);
+      return { base64, blob: this._dataURLtoBlob(base64) };
+    } catch (e) { console.warn('抓拍失败', e); return null; }
+  },
+  _dataURLtoBlob(dataURL) {
+    try {
+      const [header, b64] = dataURL.split(',');
+      const mime = (header.match(/:(.*?);/) || [])[1] || 'image/jpeg';
+      const bin = atob(b64);
+      const arr = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      return new Blob([arr], { type: mime });
+    } catch (e) { return null; }
+  },
+};
+window.Detect = Detect;
+
+// =====================================================================
+// App
+// =====================================================================
+const App = {
+  AVATARS: [
+    { icon: 'fa-cat', color: 'linear-gradient(135deg,#3dd68c,#37b6ff)' },
+    { icon: 'fa-dog', color: 'linear-gradient(135deg,#ff9f43,#ffd166)' },
+    { icon: 'fa-paw', color: 'linear-gradient(135deg,#a78bfa,#37b6ff)' },
+    { icon: 'fa-otter', color: 'linear-gradient(135deg,#37b6ff,#3dd68c)' },
+    { icon: 'fa-dragon', color: 'linear-gradient(135deg,#ff5e5e,#ff9f43)' },
+    { icon: 'fa-horse', color: 'linear-gradient(135deg,#ffd166,#ff9f43)' },
+    { icon: 'fa-fish', color: 'linear-gradient(135deg,#37b6ff,#a78bfa)' },
+    { icon: 'fa-frog', color: 'linear-gradient(135deg,#3dd68c,#ffd166)' },
+    { icon: 'fa-hippo', color: 'linear-gradient(135deg,#a78bfa,#ff5e5e)' },
+    { icon: 'fa-kiwi-bird', color: 'linear-gradient(135deg,#ffd166,#3dd68c)' },
+  ],
+  PRODUCT_ICONS: [
+    'fa-tv','fa-gamepad','fa-ice-cream','fa-tree','fa-book','fa-film','fa-music','fa-pizza-slice','fa-cake-candles',
+    'fa-football','fa-bicycle','fa-gift','fa-star','fa-crown','fa-mobile-screen','fa-tablet-screen-button','fa-headphones',
+    'fa-cookie-bite','fa-candy-cane','fa-mug-hot','fa-shoe-prints','fa-spa','fa-umbrella-beach','fa-rocket',
+  ],
+  study: {
+    running: false, mode: 'free', challengeMin: 25, startTime: 0, elapsed: 0,
+    violations: [], timerId: null, ringEl: null, degrade: false,
+  },
+  routes: {},
+
+  init() {
+    if (!Agreement.isAccepted()) {
+      Agreement.show(() => this._doInit());
+      return;
+    }
+    this._doInit();
+  },
+
+  _doInit() {
+    this.routes = {
+      setup: () => this.renderSetup(), home: () => this.renderHome(), shop: () => this.renderShop(),
+      records: () => this.renderRecords(), me: () => this.renderMe(), admin: () => this.renderAdmin(),
+      reading: () => this.renderReading(), math: () => this.renderMath(), about: () => this.renderAbout(),
+    };
+    document.querySelectorAll('.tab').forEach(t => {
+      t.addEventListener('click', () => { UI.click(); location.hash = '#/' + t.dataset.route; });
+    });
+    window.addEventListener('hashchange', () => this.router());
+    if (!Store.hasProfile()) location.hash = '#/setup';
+    else if (!location.hash || location.hash === '#/') location.hash = '#/home';
+    else this.router();
+    this.syncPoints();
+    window.addEventListener('beforeunload', () => { try { Detect.stopCamera(); } catch (e) {} });
+  },
+
+  router() {
+    const hash = location.hash.replace(/^#\/?/, '') || 'home';
+    if (hash !== 'setup' && hash !== 'admin' && !Store.hasProfile()) { location.hash = '#/setup'; return; }
+    revokeBlobUrls(document.getElementById('screen'));
+    if (hash !== 'home' && this.study.running) this.endStudy(false);
+    if (hash !== 'reading' && this.reading && this.reading.recorder) {
+      try { this.reading.recorder.cancel(); } catch (e) {}
+      this.reading.recorder = null;
+      this.reading.previewResult = null;
+    }
+    if (hash !== 'math' && this.math && this.math.qTimerId) {
+      clearInterval(this.math.qTimerId);
+      this.math.qTimerId = null;
+    }
+    const fn = this.routes[hash] || this.routes.home;
+    fn.call(this);
+    document.querySelectorAll('.tab').forEach(t => { t.classList.toggle('active', t.dataset.route === hash); });
+    this.updateTopTitle(hash);
+    this.syncPoints();
+  },
+
+  updateTopTitle(route) {
+    const map = {
+      setup:['欢迎','让我们认识一下吧'], home:['好好学习','今天的我，超棒！'],
+      shop:['积分商店','兑换喜欢的奖励'], records:['学习记录','看看我的成长'],
+      me:['我的','继续加油呀'], admin:['管理后台','配置学习参数'],
+      reading:['中英诵读','选一篇来朗读吧'], math:['数学强化','答对获得积分'],
+      about:['关于','版本信息与我的 UID'],
+    };
+    const [t, s] = map[route] || ['好好学习', ''];
+    document.getElementById('top-title').textContent = t;
+    document.getElementById('top-subtitle').textContent = s;
+  },
+
+  syncPoints() {
+    const v = Store.getPoints();
+    const el = document.getElementById('points-val');
+    if (el.textContent !== String(v)) {
+      el.textContent = v;
+      const pill = document.getElementById('points-pill');
+      pill.classList.remove('bump'); void pill.offsetWidth; pill.classList.add('bump');
+    }
+  },
+
+  renderSetup() {
+    const screen = document.getElementById('screen');
+    let selectedAvatar = 0;
+    screen.innerHTML = `
+      <div class="setup-wrap">
+        <div class="logo"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h1>你好呀！</h1>
+        <div class="sub">让我认识一下你吧～</div>
+        <input class="input" id="setup-name" type="text" placeholder="输入你的昵称" maxlength="12" />
+        <div class="section-title" style="margin-top:8px">选一个可爱头像</div>
+        <div class="avatar-picker" id="avatar-picker">
+          ${this.AVATARS.map((a, i) => `
+            <div class="avatar-option ${i === 0 ? 'active' : ''}" data-i="${i}" style="background:${a.color}">
+              <i class="fa-solid ${a.icon}"></i>
+            </div>`).join('')}
+        </div>
+        <button class="btn btn-primary btn-block btn-lg" id="setup-go">
+          <i class="fa-solid fa-arrow-right"></i> 开始学习之旅
+        </button>
+      </div>
+    `;
+    const picker = document.getElementById('avatar-picker');
+    picker.addEventListener('click', e => {
+      const opt = e.target.closest('.avatar-option'); if (!opt) return;
+      picker.querySelectorAll('.avatar-option').forEach(x => x.classList.remove('active'));
+      opt.classList.add('active');
+      selectedAvatar = +opt.dataset.i;
+      UI.click();
+    });
+    document.getElementById('setup-go').addEventListener('click', () => {
+      const name = document.getElementById('setup-name').value.trim();
+      if (!name) { UI.toast('请输入昵称', 'warn'); return; }
+      UI.click();
+      const av = this.AVATARS[selectedAvatar];
+      const today = new Date().toISOString().slice(0, 10);
+      Store.saveProfile({ name, avatar: av.icon, avatarColor: av.color, totalSec: 0, streak: 1, longestStreak: 1, lastDate: today });
+      UI.confetti(60);
+      UI.success();
+      location.hash = '#/home';
+    });
+  },
+
+  renderHome() {
+    const screen = document.getElementById('screen');
+    const cfg = Store.getConfig();
+    const profile = Store.getProfile();
+    this.study.challengeMin = cfg.challengeDurations[0] || 25;
+    screen.classList.remove('studying');
+    screen.innerHTML = `
+      <div class="study-setup" id="study-setup">
+        <div class="profile-bar">
+          <div class="avatar" style="background:${profile.avatarColor || 'linear-gradient(135deg,#3dd68c,#37b6ff)'}">
+            <i class="fa-solid ${escHtml(profile.avatar) || 'fa-cat'}"></i>
+          </div>
+          <div style="flex:1">
+            <div class="name">${escHtml(profile.name) || '我'}</div>
+            <div class="streak"><i class="fa-solid fa-fire"></i> 连续学习 ${profile.streak || 1} 天</div>
+          </div>
+        </div>
+        <div class="entry-grid">
+          <div class="entry-card entry-reading" data-go="reading">
+            <div class="ic"><i class="fa-solid fa-microphone"></i></div>
+            <div class="entry-info">
+              <div class="entry-title">中英诵读</div>
+              <div class="entry-sub">选一篇来朗读</div>
+            </div>
+          </div>
+          <div class="entry-card entry-math" data-go="math">
+            <div class="ic"><i class="fa-solid fa-square-root-variable"></i></div>
+            <div class="entry-info">
+              <div class="entry-title">数学强化</div>
+              <div class="entry-sub">答对获得积分</div>
+            </div>
+          </div>
+        </div>
+        <div class="study-mode-tabs">
+          <div class="study-mode-tab active" data-mode="free"><i class="fa-solid fa-infinity"></i> 自由模式</div>
+          <div class="study-mode-tab" data-mode="challenge"><i class="fa-solid fa-trophy"></i> 挑战模式</div>
+        </div>
+        <div class="challenge-picker" id="challenge-picker" style="display:none">
+          ${cfg.challengeDurations.map((m, i) => `
+            <div class="challenge-card ${i === 0 ? 'active' : ''}" data-min="${m}">
+              <div class="min">${m}</div>
+              <div class="lbl">分钟</div>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div class="video-wrap idle" id="video-wrap">
+        <video id="video" autoplay playsinline muted></video>
+        <div class="hud" id="hud">
+          <div class="hud-top">
+            <div id="ring"></div>
+            <div class="hud-stats">
+              <div class="hud-stat"><i class="fa-solid fa-clock"></i><div class="v" id="si-time">00:00</div><div class="l">时长</div></div>
+              <div class="hud-stat"><i class="fa-solid fa-coins"></i><div class="v" id="si-points">+0</div><div class="l">积分</div></div>
+              <div class="hud-stat"><i class="fa-solid fa-triangle-exclamation"></i><div class="v" id="si-violations">0</div><div class="l">违纪</div></div>
+            </div>
+          </div>
+          <div class="hud-status">
+            <div class="status-badge status-idle" id="status-badge">
+              <i class="fa-solid fa-play"></i> <span>开始学习</span>
+            </div>
+          </div>
+          <div class="hud-bottom">
+            <button class="btn btn-red btn-block btn-lg" id="study-btn">
+              <i class="fa-solid fa-stop"></i> 结束学习
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="study-pre-controls" id="study-pre-controls">
+        <div class="ring-wrap"><div id="ring-pre"></div></div>
+        <button class="btn btn-primary btn-block btn-lg" id="study-btn-pre">
+          <i class="fa-solid fa-play"></i> 开始学习
+        </button>
+      </div>
+    `;
+    UI.renderRing(document.getElementById('ring-pre'), 0, { size: 200, stroke: 16, label: '00:00', sublabel: '准备开始' });
+    this.study.ringEl = document.getElementById('ring');
+    UI.renderRing(this.study.ringEl, 0, { size: 64, stroke: 8, label: '', sublabel: '' });
+
+    document.querySelectorAll('.study-mode-tab').forEach(t => {
+      t.addEventListener('click', () => {
+        if (this.study.running) { UI.toast('学习中不能切换模式', 'warn'); return; }
+        UI.click();
+        document.querySelectorAll('.study-mode-tab').forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        this.study.mode = t.dataset.mode;
+        document.getElementById('challenge-picker').style.display = this.study.mode === 'challenge' ? 'flex' : 'none';
+      });
+    });
+    document.getElementById('challenge-picker').addEventListener('click', e => {
+      if (this.study.running) return;
+      const c = e.target.closest('.challenge-card'); if (!c) return;
+      UI.click();
+      document.querySelectorAll('.challenge-card').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      this.study.challengeMin = +c.dataset.min;
+    });
+    document.getElementById('study-btn-pre').addEventListener('click', () => {
+      if (this.study.running) return;
+      this.startStudy();
+    });
+    document.getElementById('study-btn').addEventListener('click', () => {
+      if (this.study.running) this.endStudy(true);
+    });
+    document.querySelectorAll('.entry-card').forEach(c => {
+      c.addEventListener('click', () => { UI.click(); location.hash = '#/' + c.dataset.go; });
+    });
+    Detect.onStatusChange = (s) => this.onStatusChange(s);
+    Detect.onViolation = (type, snap) => this.onViolation(type, snap);
+  },
+
+  async startStudy() {
+    this.study.degrade = false;
+    const cfg = Store.getConfig();
+    const screen = document.getElementById('screen');
+    const badge = document.getElementById('status-badge');
+    const vw = document.getElementById('video-wrap');
+
+    this._enterFullscreen();
+    badge.className = 'status-badge status-idle';
+    badge.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>启动中…</span>`;
+    const camGranted = await Permission.ensureCamera('学习检测需要摄像头');
+    if (!camGranted) {
+      badge.className = 'status-badge status-nocamera';
+      badge.innerHTML = `<i class="fa-solid fa-camera-slash"></i> <span>摄像头权限未开启</span>`;
+      this._exitFullscreen();
+      return;
+    }
+    const video = document.getElementById('video');
+    const r = await Detect.start(video, cfg, {
+      onStatusChange: s => this.onStatusChange(s),
+      onViolation: (t, snap) => this.onViolation(t, snap),
+    });
+    if (!r.ok) {
+      if (r.error && r.error.name === 'NotAllowedError') {
+        badge.className = 'status-badge status-nocamera';
+        badge.innerHTML = `<i class="fa-solid fa-camera-slash"></i> <span>摄像头被拒绝</span>`;
+        UI.toast('请允许摄像头权限', 'warn');
+      } else if (r.degrade) {
+        badge.className = 'status-badge status-degraded';
+        badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>仅计时模式</span>`;
+        UI.toast('模型加载失败，使用仅计时模式', 'warn');
+      } else {
+        badge.className = 'status-badge status-nocamera';
+        badge.innerHTML = `<i class="fa-solid fa-camera-slash"></i> <span>无摄像头</span>`;
+      }
+      const cont = await UI.confirm('摄像头无法启动，是否进入「练习模式」？<br>仅计时和计积分，不进行人脸检测。', '摄像头问题');
+      if (!cont) {
+        this._exitFullscreen();
+        badge.className = 'status-badge status-idle';
+        badge.innerHTML = `<i class="fa-solid fa-play"></i> <span>开始学习</span>`;
+        return;
+      }
+      this.study.degrade = true;
+    } else if (r.degrade) {
+      this.study.degrade = true;
+    }
+    vw.classList.remove('idle');
+    vw.classList.remove('border-green', 'border-yellow', 'border-red');
+    screen.classList.add('studying');
+    vw.classList.add(this.study.degrade ? 'border-yellow' : 'border-green');
+    this.study.running = true;
+    this.study.startTime = performance.now();
+    this.study.elapsed = 0;
+    this.study.violations = [];
+    this.study.timerId = setInterval(() => this.tick(), 250);
+    UI.click();
+  },
+
+  tick() {
+    if (!this.study.running) return;
+    const cfg = Store.getConfig();
+    const elapsedSec = (performance.now() - this.study.startTime) / 1000;
+    this.study.elapsed = elapsedSec;
+    let progress, ringLabel, ringSub;
+    if (this.study.mode === 'challenge') {
+      const total = this.study.challengeMin * 60;
+      progress = elapsedSec / total;
+      const remain = Math.max(0, total - elapsedSec);
+      ringLabel = UI.fmtTime(remain);
+      ringSub = progress >= 1 ? '已完成！' : '挑战剩余';
+      if (progress >= 1) { this.endStudy(true); return; }
+    } else {
+      progress = (elapsedSec % 1500) / 1500;
+      ringLabel = UI.fmtTime(elapsedSec);
+      ringSub = '自由学习中';
+    }
+    UI.updateRing(this.study.ringEl, progress, { size: 64, stroke: 8 });
+    if (this.study.mode === 'challenge' && progress > 1) {
+      this.study.ringEl.querySelector('svg')?.classList.add('over');
+    }
+    document.getElementById('si-time').textContent = UI.fmtTime(elapsedSec);
+    const exp = Math.floor(elapsedSec / 60 * cfg.rewardPPM) - this.study.violations.length * cfg.penaltyPer;
+    document.getElementById('si-points').textContent = (exp >= 0 ? '+' : '') + exp;
+    document.getElementById('si-violations').textContent = this.study.violations.length;
+  },
+
+  onStatusChange(s) {
+    if (!this.study.running) return;
+    const badge = document.getElementById('status-badge');
+    const vw = document.getElementById('video-wrap');
+    const map = {
+      focusing: ['status-focusing', 'fa-circle-check', '专注中', 'border-green'],
+      absent: ['status-absent', 'fa-person-running', '离开座位', 'border-red'],
+      distract: ['status-distract', 'fa-triangle-exclamation', '请专注', 'border-yellow'],
+      noticing: ['status-degraded', 'fa-book-open', '低头学习中', 'border-yellow'],
+      degraded: ['status-degraded', 'fa-triangle-exclamation', '仅计时模式', 'border-yellow'],
+      nocamera: ['status-nocamera', 'fa-camera-slash', '无摄像头', 'border-red'],
+    };
+    const [cls, icon, text, border] = map[s] || ['status-idle', 'fa-circle', '未知', 'border-green'];
+    badge.className = 'status-badge ' + cls + ' pulse';
+    badge.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${text}</span>`;
+    void badge.offsetWidth;
+    badge.classList.remove('pulse');
+    if (vw) {
+      vw.classList.remove('border-green', 'border-yellow', 'border-red');
+      vw.classList.add(border);
+    }
+  },
+
+  onViolation(type, snap) {
+    const cfg = Store.getConfig();
+    let snapKey = null;
+    if (snap && snap.blob) {
+      snapKey = 'snap_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+      IDB.put(snapKey, snap.blob).catch(() => {});
+    }
+    this.study.violations.push({ t: Date.now(), type, snapKey });
+    UI.alarm();
+    UI.pulseRed();
+    UI.toast(`违纪：${type}，扣 ${cfg.penaltyPer} 分`, 'error', 3000);
+    const pill = document.getElementById('points-pill').getBoundingClientRect();
+    UI.floatPoints(-cfg.penaltyPer, pill.left + pill.width/2, pill.top + pill.height/2);
+    Store.addPoints(-cfg.penaltyPer);
+    this.syncPoints();
+    if (this.study.violations.length >= 10) {
+      UI.toast('违纪过多，本次学习自动结束', 'warn', 3000);
+      this.endStudy(true);
+    }
+  },
+
+  endStudy(settle = true) {
+    if (!this.study.running && !this.study.timerId) return;
+    this.study.running = false;
+    clearInterval(this.study.timerId);
+    this.study.timerId = null;
+    Detect.stop();
+    const cfg = Store.getConfig();
+    const elapsedSec = Math.max(0, (performance.now() - this.study.startTime) / 1000);
+    const screen = document.getElementById('screen');
+    const vw = document.getElementById('video-wrap');
+    if (screen) screen.classList.remove('studying');
+    if (vw) {
+      vw.classList.remove('border-green', 'border-yellow', 'border-red');
+      vw.classList.add('idle');
+    }
+    this._exitFullscreen();
+    if (!settle || elapsedSec < 5) { this._resetStudyUI(); return; }
+    const studyPoints = Math.floor(elapsedSec / 60 * cfg.rewardPPM);
+    const penalty = this.study.violations.length * cfg.penaltyPer;
+    const netPoints = studyPoints - penalty;
+    Store.addPoints(studyPoints);
+    const today = new Date().toISOString().slice(0, 10);
+    Store.updateStreakOnStudy(today);
+    const profile = Store.getProfile();
+    profile.totalSec = (profile.totalSec || 0) + elapsedSec;
+    Store.saveProfile(profile);
+    Store.addSession({
+      id: 's' + Date.now(),
+      start: Date.now() - elapsedSec * 1000, end: Date.now(),
+      durSec: Math.round(elapsedSec),
+      mode: this.study.mode === 'challenge' ? 'challenge-' + this.study.challengeMin : 'free',
+      points: netPoints, studyPoints, penalty,
+      violations: this.study.violations.slice(0, cfg.snapCap),
+    });
+    this.syncPoints();
+    UI.confetti(80);
+    UI.success();
+    const challengeDone = this.study.mode === 'challenge' && elapsedSec >= this.study.challengeMin * 60;
+    const title = challengeDone ? '挑战完成！' : '本次学习结束';
+    const desc = `
+      <div style="text-align:left;font-size:14px;line-height:1.8;color:var(--text)">
+        <div>学习时长：<b>${UI.fmtDur(elapsedSec)}</b></div>
+        <div>学习奖励：<span style="color:var(--green-d)">+${studyPoints}</span></div>
+        <div>违纪扣分：<span style="color:var(--red-d)">-${penalty}</span>（已即时扣除 ${this.study.violations.length} 次）</div>
+        <div style="border-top:2px dashed var(--border);margin-top:8px;padding-top:8px">
+          本次净增：<b style="color:var(--gold-d);font-size:18px">${netPoints >= 0 ? '+' : ''}${netPoints} 积分</b>
+        </div>
+      </div>`;
+    UI.badge(title, desc, challengeDone ? 'fa-trophy' : 'fa-medal').then(() => { this._resetStudyUI(); });
+  },
+
+  _resetStudyUI() {
+    const badge = document.getElementById('status-badge');
+    if (badge) {
+      badge.className = 'status-badge status-idle';
+      badge.innerHTML = '<i class="fa-solid fa-play"></i> <span>开始学习</span>';
+    }
+    if (this.study.ringEl) UI.renderRing(this.study.ringEl, 0, { size: 64, stroke: 8, label: '', sublabel: '' });
+    const ringPre = document.getElementById('ring-pre');
+    if (ringPre) UI.renderRing(ringPre, 0, { size: 200, stroke: 16, label: '00:00', sublabel: '准备开始' });
+    const t = document.getElementById('si-time');
+    const p = document.getElementById('si-points');
+    const v = document.getElementById('si-violations');
+    if (t) t.textContent = '00:00';
+    if (p) p.textContent = '+0';
+    if (v) v.textContent = '0';
+  },
+
+  _enterFullscreen() {
+    try {
+      const el = document.documentElement;
+      if (!document.fullscreenElement && el.requestFullscreen) {
+        const p = el.requestFullscreen({ navigationUI: 'hide' });
+        if (p && p.catch) p.catch(() => {});
+      }
+    } catch (e) {}
+  },
+  _exitFullscreen() {
+    try {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        const p = document.exitFullscreen();
+        if (p && p.catch) p.catch(() => {});
+      }
+    } catch (e) {}
+  },
+
+  renderShop() {
+    const screen = document.getElementById('screen');
+    const products = Store.getProducts();
+    const myPoints = Store.getPoints();
+    screen.innerHTML = `
+      <div class="card" style="text-align:center;background:linear-gradient(135deg,#fff5d6,#ffe9a8)">
+        <div style="font-size:14px;color:var(--gold-d);font-weight:700">我的积分</div>
+        <div style="font-size:36px;color:var(--gold-d);font-weight:800;margin:6px 0">
+          <i class="fa-solid fa-coins"></i> ${myPoints}
+        </div>
+        <div style="font-size:12px;color:var(--text-2)">努力学习赚积分，兑换喜欢的奖励吧～</div>
+      </div>
+      <div class="section-title"><i class="fa-solid fa-gift"></i> 可兑换的奖励</div>
+      <div class="shop-grid" id="shop-grid">
+        ${products.map((p, i) => `
+          <div class="shop-card" style="animation-delay:${i * 60}ms">
+            <div class="icon"><i class="fa-solid ${escHtml(p.icon)}"></i></div>
+            <div class="name">${escHtml(p.name)}</div>
+            <div class="price"><i class="fa-solid fa-coins"></i> ${p.price}</div>
+            <div class="stock">${p.stock > 0 ? '库存 ' + p.stock : '已兑换完'}</div>
+            <button class="btn ${myPoints >= p.price && p.stock > 0 ? 'btn-gold' : 'btn-ghost'}"
+                    ${myPoints < p.price || p.stock <= 0 ? 'disabled' : ''} data-id="${escHtml(p.id)}">
+              <i class="fa-solid fa-cart-shopping"></i> 兑换
+            </button>
+          </div>`).join('')}
+      </div>
+      ${products.length === 0 ? '<div class="empty-list">商店还是空的，去管理后台添加吧～</div>' : ''}
+    `;
+    document.getElementById('shop-grid').addEventListener('click', async e => {
+      const btn = e.target.closest('button[data-id]'); if (!btn || btn.disabled) return;
+      UI.click();
+      const id = btn.dataset.id;
+      const p = Store.getProducts().find(x => x.id === id); if (!p) return;
+      const ok = await UI.confirm(`确定兑换「${escHtml(p.name)}」吗？<br>将扣除 <b style="color:var(--gold-d)">${p.price} 积分</b>`, '兑换确认');
+      if (!ok) return;
+      if (Store.getPoints() < p.price) { UI.toast('积分不足', 'warn'); return; }
+      Store.addPoints(-p.price);
+      Store.claimProduct(id);
+      Store.addRedemption({ productId: p.id, productName: p.name, productIcon: p.icon, price: p.price });
+      UI.confetti(60);
+      await UI.badge('兑换成功！', `「${escHtml(p.name)}」<br>已提交兑换，等待确认～`, escHtml(p.icon));
+      this.syncPoints();
+      this.renderShop();
+    });
+  },
+
+  renderRecords() {
+    const screen = document.getElementById('screen');
+    const stats = Store.getStats();
+    const sessions = Store.getSessions();
+    screen.innerHTML = `
+      <div class="stats-row">
+        <div class="stat-card green"><div class="v">${UI.fmtDur(stats.totalSec)}</div><div class="l">总学习时长</div></div>
+        <div class="stat-card gold"><div class="v">${stats.totalPoints}</div><div class="l">总获得积分</div></div>
+        <div class="stat-card red"><div class="v">${stats.totalViolations}</div><div class="l">总违纪次数</div></div>
+      </div>
+      <div class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> 学习历史</div>
+      <div id="records-list"></div>
+    `;
+    const list = document.getElementById('records-list');
+    if (sessions.length === 0) {
+      list.innerHTML = `<div class="empty"><i class="fa-solid fa-book-open"></i><div>还没有学习记录</div><div style="font-size:13px;margin-top:6px">开始第一次学习吧～</div></div>`;
+      return;
+    }
+    const groups = {};
+    sessions.forEach(s => { const day = UI.fmtDay(s.start); (groups[day] = groups[day] || []).push(s); });
+    list.innerHTML = Object.entries(groups).map(([day, items]) => `
+      <div class="day-group">
+        <div class="day-title">${day}</div>
+        ${items.map(s => this._recordCard(s)).join('')}
+      </div>`).join('');
+    list.addEventListener('click', e => {
+      const card = e.target.closest('.record-card'); if (!card) return;
+      if (e.target.closest('img') || e.target.closest('.no-snap')) return;
+      card.classList.toggle('expanded');
+    });
+    hydrateBlobs(list);
+  },
+
+  _recordCard(s) {
+    const isChallenge = s.mode && s.mode.startsWith('challenge');
+    const min = isChallenge ? s.mode.split('-')[1] : '';
+    const vcount = (s.violations || []).length;
+    return `
+      <div class="record-card">
+        <div class="row1">
+          <div class="time"><i class="fa-regular fa-clock"></i> ${UI.fmtDate(s.start).slice(11)}</div>
+          <div class="mode-tag ${isChallenge ? 'challenge' : ''}">${isChallenge ? '挑战 ' + min + '分' : '自由'}</div>
+        </div>
+        <div class="row2">
+          <span>时长 <b style="color:var(--text)">${UI.fmtDur(s.durSec)}</b></span>
+          <span>积分 <span class="${(s.points || 0) >= 0 ? 'points-gain' : 'points-loss'}">${(s.points || 0) >= 0 ? '+' : ''}${s.points || 0}</span></span>
+          <span>违纪 <b style="color:var(--red-d)">${vcount}</b></span>
+        </div>
+        ${vcount > 0 ? `
+          <div class="violations">
+            <div style="font-size:12px;color:var(--text-2);margin-top:8px"><i class="fa-solid fa-camera"></i> 违纪抓拍（点击展开）</div>
+            ${s.violations.map(v => `
+              <div class="violation-item">
+                ${v.snapKey ? `<img data-snap-key="${escHtml(v.snapKey)}" alt="snap" />`
+                  : v.snap ? `<img src="${escHtml(v.snap)}" alt="snap" />`
+                  : `<div class="no-snap"><i class="fa-solid fa-image-slash"></i></div>`}
+                <div class="info">
+                  <div class="type">${escHtml(v.type)}</div>
+                  <div class="t">${UI.fmtDate(v.t).slice(11)}</div>
+                </div>
+              </div>`).join('')}
+          </div>` : ''}
+      </div>`;
+  },
+
+  renderMe() {
+    const screen = document.getElementById('screen');
+    const profile = Store.getProfile();
+    const stats = Store.getStats();
+    screen.innerHTML = `
+      <div class="me-header">
+        <div class="avatar avatar-lg"><i class="fa-solid ${escHtml(profile.avatar) || 'fa-cat'}"></i></div>
+        <div class="name">${escHtml(profile.name) || '我'}</div>
+        <div class="stat-row">
+          <div class="item"><div class="v">${UI.fmtDur(stats.totalSec)}</div><div class="l">总时长</div></div>
+          <div class="item"><div class="v">${profile.streak || 0}</div><div class="l">连胜天</div></div>
+          <div class="item"><div class="v">${Store.getPoints()}</div><div class="l">积分</div></div>
+        </div>
+      </div>
+      <div class="menu-list">
+        <div class="menu-item" id="me-edit">
+          <i class="fa-solid fa-user-pen"></i>
+          <span class="label">修改我的资料</span>
+          <i class="fa-solid fa-chevron-right arrow"></i>
+        </div>
+        <div class="menu-item" id="me-reset-streak">
+          <i class="fa-solid fa-fire"></i>
+          <span class="label">连胜：${profile.longestStreak || 0} 天（最长）</span>
+          <i class="fa-solid fa-chevron-right arrow"></i>
+        </div>
+      </div>
+      <div class="section-title"><i class="fa-solid fa-shield-halved"></i> 管理入口</div>
+      <div class="menu-list">
+        <div class="menu-item" id="me-admin">
+          <i class="fa-solid fa-user-shield"></i>
+          <span class="label">管理模式</span>
+          <i class="fa-solid fa-chevron-right arrow"></i>
+        </div>
+      </div>
+      <div class="section-title"><i class="fa-solid fa-circle-info"></i> 关于</div>
+      <div class="menu-list">
+        <div class="menu-item" id="me-about">
+          <i class="fa-solid fa-circle-info"></i>
+          <span class="label">关于好好学习</span>
+          <i class="fa-solid fa-chevron-right arrow"></i>
+        </div>
+      </div>
+      <div style="text-align:center;color:var(--text-2);font-size:12px;margin-top:24px">
+        好好学习 v1.0.2 · 加油加油！
+      </div>
+    `;
+    document.getElementById('me-edit').addEventListener('click', () => this.editProfile());
+    document.getElementById('me-admin').addEventListener('click', () => this.enterAdmin());
+    document.getElementById('me-about').addEventListener('click', () => { UI.click(); location.hash = '#/about'; });
+  },
+
+  async editProfile() {
+    UI.click();
+    const profile = Store.getProfile();
+    const name = await UI.promptText('修改昵称', '输入新昵称', profile.name || '');
+    if (name === null) return;
+    if (!name.trim()) { UI.toast('昵称不能为空', 'warn'); return; }
+    profile.name = name.trim();
+    Store.saveProfile(profile);
+    UI.toast('已更新', 'success');
+    this.renderMe();
+  },
+
+  async enterAdmin() {
+    UI.click();
+    const pwd = await UI.promptPassword('请输入管理密码');
+    if (pwd === null) return;
+    const cfg = Store.getConfig();
+    if (pwd !== cfg.pwd) { UI.toast('密码错误', 'error'); return; }
+    UI.success();
+    location.hash = '#/admin';
+  },
+
+  renderAdmin() {
+    const screen = document.getElementById('screen');
+    const pendingCount = Store.getRedemptions().filter(r => r.status === 'pending').length;
+    screen.innerHTML = `
+      <div class="admin-tabs" id="admin-tabs">
+        <div class="admin-tab active" data-tab="reward"><i class="fa-solid fa-coins"></i> 奖励</div>
+        <div class="admin-tab" data-tab="penalty"><i class="fa-solid fa-gavel"></i> 惩罚</div>
+        <div class="admin-tab" data-tab="challenge"><i class="fa-solid fa-trophy"></i> 挑战</div>
+        <div class="admin-tab" data-tab="shop"><i class="fa-solid fa-store"></i> 商品</div>
+        <div class="admin-tab" data-tab="math-config"><i class="fa-solid fa-square-root-variable"></i> 数学</div>
+        <div class="admin-tab" data-tab="reading-materials"><i class="fa-solid fa-book"></i> 诵读素材</div>
+        <div class="admin-tab" data-tab="reading-review"><i class="fa-solid fa-clipboard-check"></i> 诵读审核</div>
+        <div class="admin-tab" data-tab="redemptions"><i class="fa-solid fa-gift"></i> 兑换确认${pendingCount > 0 ? ` (${pendingCount})` : ''}</div>
+        <div class="admin-tab" data-tab="records"><i class="fa-solid fa-clock-rotate-left"></i> 记录</div>
+        <div class="admin-tab" data-tab="danger"><i class="fa-solid fa-trash"></i> 危险</div>
+      </div>
+      <div id="admin-content"></div>
+      <button class="btn btn-ghost btn-block" id="admin-exit" style="margin-top:8px">
+        <i class="fa-solid fa-right-from-bracket"></i> 退出管理后台
+      </button>
+    `;
+    document.getElementById('admin-tabs').addEventListener('click', e => {
+      const t = e.target.closest('.admin-tab'); if (!t) return;
+      UI.click();
+      document.querySelectorAll('.admin-tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      this._renderAdminTab(t.dataset.tab);
+    });
+    document.getElementById('admin-exit').addEventListener('click', () => { UI.click(); location.hash = '#/me'; });
+    this._renderAdminTab('reward');
+  },
+
+  _renderAdminTab(tab) {
+    const el = document.getElementById('admin-content');
+    revokeBlobUrls(el);
+    if (tab === 'reward') el.innerHTML = this._adminReward();
+    else if (tab === 'penalty') el.innerHTML = this._adminPenalty();
+    else if (tab === 'challenge') el.innerHTML = this._adminChallenge();
+    else if (tab === 'shop') el.innerHTML = this._adminShop();
+    else if (tab === 'math-config') el.innerHTML = this._adminMathConfig();
+    else if (tab === 'reading-materials') el.innerHTML = this._adminReadingMaterials();
+    else if (tab === 'reading-review') el.innerHTML = this._adminReadingReview();
+    else if (tab === 'redemptions') el.innerHTML = this._adminRedemptions();
+    else if (tab === 'records') el.innerHTML = this._adminRecords();
+    else if (tab === 'danger') el.innerHTML = this._adminDanger();
+    this._bindAdminTab(tab, el);
+    if (tab === 'records' || tab === 'reading-review') hydrateBlobs(el);
+  },
+
+  _adminReward() {
+    const cfg = Store.getConfig();
+    return `
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-coins"></i> 学习奖励</div>
+        <div class="form-row"><label>每分钟学习奖励积分</label><input type="number" id="cfg-rewardPPM" value="${cfg.rewardPPM}" min="0" max="100" /></div>
+        <div class="notice"><i class="fa-solid fa-circle-info"></i><span>例：每分钟 8 分 → 学习 25 分钟可得 200 分</span></div>
+        <button class="btn btn-primary btn-block" id="save-reward"><i class="fa-solid fa-floppy-disk"></i> 保存</button>
+      </div>`;
+  },
+
+  _adminPenalty() {
+    const cfg = Store.getConfig();
+    return `
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-gavel"></i> 违纪惩罚</div>
+        <div class="form-row"><label>每次违纪扣分</label><input type="number" id="cfg-penaltyPer" value="${cfg.penaltyPer}" min="0" max="100" /></div>
+        <div class="form-row"><label>离座判定阈值（秒）</label><input type="number" id="cfg-absenceThr" value="${cfg.absenceThr}" min="3" max="120" /></div>
+        <div class="form-row"><label>分心判定阈值（秒）</label><input type="number" id="cfg-distractThr" value="${cfg.distractThr}" min="3" max="60" /></div>
+        <div class="form-row"><label>检测间隔（毫秒）</label><input type="number" id="cfg-detectInterval" value="${cfg.detectInterval}" min="500" max="3000" step="250" /></div>
+        <div class="notice"><i class="fa-solid fa-circle-info"></i><span>低头看书只提示不扣分；趴桌睡觉、东张西望才判违纪</span></div>
+        <button class="btn btn-primary btn-block" id="save-penalty"><i class="fa-solid fa-floppy-disk"></i> 保存</button>
+      </div>`;
+  },
+
+  _adminChallenge() {
+    const cfg = Store.getConfig();
+    const PRESET = [10, 15, 20, 25, 30, 40, 45, 60, 90];
+    return `
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-trophy"></i> 挑战模式时长</div>
+        <div class="muted" style="font-size:13px;margin-bottom:10px">点击启用/取消，至少保留 1 个</div>
+        <div class="chip-row" id="challenge-chips">
+          ${PRESET.map(m => `<div class="chip ${cfg.challengeDurations.includes(m) ? 'active' : ''}" data-min="${m}">${m} 分钟</div>`).join('')}
+        </div>
+        <button class="btn btn-primary btn-block" id="save-challenge" style="margin-top:14px">
+          <i class="fa-solid fa-floppy-disk"></i> 保存
+        </button>
+      </div>`;
+  },
+
+  _adminShop() {
+    const products = Store.getProducts();
+    return `
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-store"></i> 奖励商品管理</div>
+        <button class="btn btn-primary btn-block" id="add-product"><i class="fa-solid fa-plus"></i> 添加新商品</button>
+      </div>
+      <div class="section-title"><i class="fa-solid fa-list"></i> 当前商品</div>
+      ${products.map(p => `
+        <div class="product-row" data-id="${escHtml(p.id)}">
+          <div class="icon"><i class="fa-solid ${escHtml(p.icon)}"></i></div>
+          <div class="info">
+            <div class="name">${escHtml(p.name)}</div>
+            <div class="meta">${p.price} 积分 · 库存 ${p.stock} · 已兑 ${p.claimed || 0}</div>
+          </div>
+          <div class="actions">
+            <button class="edit" data-id="${escHtml(p.id)}"><i class="fa-solid fa-pen"></i></button>
+            <button class="del" data-id="${escHtml(p.id)}"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>`).join('')}
+      ${products.length === 0 ? '<div class="empty-list">还没有商品</div>' : ''}
+    `;
+  },
+
+  _adminRedemptions() {
+    const all = Store.getRedemptions();
+    const pending = all.filter(r => r.status === 'pending');
+    const fulfilled = all.filter(r => r.status === 'fulfilled');
+    return `
+      <div class="card" style="background:linear-gradient(135deg,#fff8e1,#fff3c2)">
+        <div style="display:flex;justify-content:space-around;text-align:center">
+          <div>
+            <div style="font-size:26px;font-weight:800;color:var(--gold-d)">${pending.length}</div>
+            <div style="font-size:12px;color:var(--text-2);font-weight:700;margin-top:2px">待确认</div>
+          </div>
+          <div style="width:2px;background:rgba(0,0,0,.06);border-radius:1px"></div>
+          <div>
+            <div style="font-size:26px;font-weight:800;color:var(--green-d)">${fulfilled.length}</div>
+            <div style="font-size:12px;color:var(--text-2);font-weight:700;margin-top:2px">已确认</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-title"><i class="fa-solid fa-gift"></i> 待确认 (${pending.length})</div>
+      ${pending.length === 0 ? '<div class="empty-list">暂无待确认的奖励 🎉</div>'
+        : pending.map(r => this._redemptionCard(r, true)).join('')}
+      <div class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> 历史记录 (${fulfilled.length})</div>
+      ${fulfilled.length === 0 ? '<div class="empty-list">暂无历史</div>'
+        : fulfilled.map(r => this._redemptionCard(r, false)).join('')}
+    `;
+  },
+
+  _redemptionCard(r, showActions) {
+    return `
+      <div class="redemption-card" data-id="${escHtml(r.id)}" style="background:var(--card);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm)">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:${showActions ? '12px' : '0'}">
+          <div style="width:44px;height:44px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px">
+            <i class="fa-solid ${escHtml(r.productIcon || 'fa-gift')}"></i>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:15px;font-weight:800">${escHtml(r.productName)}</div>
+            <div style="font-size:12px;color:var(--text-2);margin-top:2px">
+              <i class="fa-solid fa-coins" style="color:var(--gold-d)"></i> ${r.price} 积分 · ${UI.fmtDate(r.createdAt)}
+            </div>
+            ${r.status === 'fulfilled' && r.fulfilledAt ? `
+              <div style="font-size:11px;color:var(--green-d);margin-top:4px">
+                <i class="fa-solid fa-circle-check"></i> 已于 ${UI.fmtDate(r.fulfilledAt)} 确认
+              </div>` : ''}
+          </div>
+        </div>
+        ${showActions ? `
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary" data-act="fulfill" style="flex:1"><i class="fa-solid fa-check"></i> 已确认</button>
+            <button class="btn btn-ghost" data-act="delete"><i class="fa-solid fa-trash"></i></button>
+          </div>` : `
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-ghost" data-act="delete" style="flex:1"><i class="fa-solid fa-trash"></i> 删除记录</button>
+          </div>`}
+      </div>
+    `;
+  },
+
+  _adminRecords() {
+    const sessions = Store.getSessions();
+    const stats = Store.getStats();
+    return `
+      <div class="stats-row">
+        <div class="stat-card green"><div class="v">${stats.totalSec}</div><div class="l">总学习秒数</div></div>
+        <div class="stat-card gold"><div class="v">${stats.totalPoints}</div><div class="l">总积分</div></div>
+        <div class="stat-card red"><div class="v">${stats.totalViolations}</div><div class="l">总违纪</div></div>
+      </div>
+      <div class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> 全部学习记录</div>
+      <div id="admin-records-list">
+        ${sessions.length === 0 ? '<div class="empty-list">还没有学习记录</div>' : sessions.map(s => this._recordCard(s)).join('')}
+      </div>
+    `;
+  },
+
+  _adminDanger() {
+    const lsMB = (Store._estimateSize() / 1024 / 1024).toFixed(2);
+    const reads = Store.getReadingRecords().length;
+    const sessions = Store.getSessions().length;
+    return `
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-database"></i> 存储用量</div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0">
+          <span>localStorage（元数据）</span><b>${lsMB} MB / 约 5 MB</b>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0">
+          <span>IndexedDB（录音+抓拍）</span><b id="idb-size">计算中…</b>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0">
+          <span>诵读录音 / 学习记录</span><b>${reads} 条 / ${sessions} 条</b>
+        </div>
+      </div>
+      <div class="card" style="border:2px solid var(--red)">
+        <div class="card-title" style="color:var(--red-d)"><i class="fa-solid fa-triangle-exclamation"></i> 危险操作</div>
+        <div class="muted" style="font-size:13px;margin-bottom:14px">以下操作不可恢复，请谨慎！</div>
+        <button class="btn btn-red btn-block" id="danger-clear-sessions">
+          <i class="fa-solid fa-trash"></i> 清空所有学习记录
+        </button>
+        <button class="btn btn-red btn-block" style="margin-top:10px" id="danger-reset-points">
+          <i class="fa-solid fa-rotate-left"></i> 重置积分归零
+        </button>
+        <button class="btn btn-red btn-block" style="margin-top:10px" id="danger-reset-all">
+          <i class="fa-solid fa-power-off"></i> 重置全部数据
+        </button>
+        <div class="section-title"><i class="fa-solid fa-key"></i> 修改管理密码</div>
+        <div class="form-row">
+          <input type="text" id="cfg-pwd" value="${escHtml(Store.getConfig().pwd)}" placeholder="新密码" />
+        </div>
+        <button class="btn btn-primary btn-block" id="save-pwd"><i class="fa-solid fa-floppy-disk"></i> 保存密码</button>
+      </div>
+    `;
+  },
+
+  _bindAdminTab(tab, el) {
+    if (tab === 'reward') {
+      el.querySelector('#save-reward').onclick = () => {
+        const v = +el.querySelector('#cfg-rewardPPM').value;
+        if (isNaN(v) || v < 0) { UI.toast('请输入有效数值', 'warn'); return; }
+        Store.updateConfig({ rewardPPM: v });
+        UI.toast('已保存', 'success');
+      };
+    } else if (tab === 'penalty') {
+      el.querySelector('#save-penalty').onclick = () => {
+        const patch = {
+          penaltyPer: +el.querySelector('#cfg-penaltyPer').value,
+          absenceThr: +el.querySelector('#cfg-absenceThr').value,
+          distractThr: +el.querySelector('#cfg-distractThr').value,
+          detectInterval: +el.querySelector('#cfg-detectInterval').value,
+        };
+        for (const k in patch) if (isNaN(patch[k]) || patch[k] < 0) { UI.toast('请输入有效数值', 'warn'); return; }
+        Store.updateConfig(patch);
+        UI.toast('已保存', 'success');
+      };
+    } else if (tab === 'challenge') {
+      el.querySelector('#save-challenge').onclick = () => {
+        const arr = [];
+        el.querySelectorAll('.chip.active').forEach(c => arr.push(+c.dataset.min));
+        if (arr.length === 0) { UI.toast('至少保留 1 个时长', 'warn'); return; }
+        arr.sort((a, b) => a - b);
+        Store.updateConfig({ challengeDurations: arr });
+        UI.toast('已保存', 'success');
+      };
+      el.querySelectorAll('.chip').forEach(c => { c.onclick = () => c.classList.toggle('active'); });
+    } else if (tab === 'shop') {
+      el.querySelector('#add-product').onclick = () => this._editProduct();
+      el.querySelectorAll('.product-row .edit').forEach(b => { b.onclick = () => this._editProduct(b.dataset.id); });
+      el.querySelectorAll('.product-row .del').forEach(b => {
+        b.onclick = async () => {
+          const ok = await UI.confirm('确定删除这个商品？', '删除确认');
+          if (!ok) return;
+          Store.removeProduct(b.dataset.id);
+          UI.toast('已删除', 'success');
+          this._renderAdminTab('shop');
+        };
+      });
+    } else if (tab === 'redemptions') {
+      el.querySelectorAll('.redemption-card').forEach(card => {
+        const id = card.dataset.id;
+        card.querySelectorAll('[data-act]').forEach(btn => {
+          btn.onclick = async () => {
+            UI.click();
+            const act = btn.dataset.act;
+            if (act === 'fulfill') {
+              const ok = await UI.confirm('确认已兑现这个奖励？', '确认兑现');
+              if (!ok) return;
+              Store.updateRedemption(id, { status: 'fulfilled', fulfilledAt: Date.now() });
+              UI.toast('已确认', 'success');
+            } else if (act === 'delete') {
+              const ok = await UI.confirm('删除这条兑换记录？<br>（不影响已扣除的积分）', '删除确认');
+              if (!ok) return;
+              Store.removeRedemption(id);
+              UI.toast('已删除', 'success');
+            }
+            this._renderAdminTab('redemptions');
+          };
+        });
+      });
+    } else if (tab === 'records') {
+      el.querySelectorAll('.record-card').forEach(c => {
+        c.onclick = (e) => {
+          if (e.target.closest('img') || e.target.closest('.no-snap')) return;
+          c.classList.toggle('expanded');
+        };
+      });
+      hydrateBlobs(el);
+    } else if (tab === 'danger') {
+      IDB.estimateSize().then(bytes => {
+        const elSize = el.querySelector('#idb-size');
+        if (elSize) elSize.textContent = (bytes / 1024 / 1024).toFixed(2) + ' MB';
+      });
+      el.querySelector('#save-pwd').onclick = () => {
+        const v = el.querySelector('#cfg-pwd').value.trim();
+        if (!v) { UI.toast('密码不能为空', 'warn'); return; }
+        Store.updateConfig({ pwd: v });
+        UI.toast('密码已更新', 'success');
+      };
+      el.querySelector('#danger-clear-sessions').onclick = async () => {
+        const ok = await UI.confirm('确定清空全部学习记录？<br>此操作不可恢复！', '危险操作');
+        if (!ok) return;
+        const sessions = Store.getSessions();
+        for (const s of sessions) for (const v of (s.violations || [])) if (v.snapKey) IDB.delete(v.snapKey).catch(() => {});
+        localStorage.removeItem('gb_sessions');
+        UI.toast('已清空记录', 'success');
+        this._renderAdminTab('records');
+      };
+      el.querySelector('#danger-reset-points').onclick = async () => {
+        const ok = await UI.confirm('确定把积分重置为 0？', '危险操作');
+        if (!ok) return;
+        Store.set('gb_balance', { points: 0 });
+        this.syncPoints();
+        UI.toast('积分已归零', 'success');
+      };
+      el.querySelector('#danger-reset-all').onclick = async () => {
+        const ok = await UI.confirm('确定重置全部数据？<br>所有学习记录、积分、配置都会丢失！', '危险操作');
+        if (!ok) return;
+        const ok2 = await UI.confirm('再次确认：真的要重置吗？', '再次确认');
+        if (!ok2) return;
+        Store.resetAll();
+        location.hash = '#/setup';
+        UI.toast('已重置', 'success');
+      };
+    } else if (tab === 'math-config') {
+      let chosenLevel = Store.getConfig().mathDefaultLevel;
+      let timerEnabled = !!Store.getConfig().mathTimerEnabled;
+      el.querySelectorAll('#mathcfg-levels .chip').forEach(c => {
+        c.onclick = () => {
+          UI.click();
+          el.querySelectorAll('#mathcfg-levels .chip').forEach(x => x.classList.remove('active'));
+          c.classList.add('active');
+          chosenLevel = +c.dataset.idx;
+        };
+      });
+      el.querySelectorAll('#mathcfg-timer .chip').forEach(c => {
+        c.onclick = () => {
+          UI.click();
+          el.querySelectorAll('#mathcfg-timer .chip').forEach(x => x.classList.remove('active'));
+          c.classList.add('active');
+          timerEnabled = c.dataset.on === '1';
+          el.querySelector('#mathcfg-timer-sec-row').style.display = timerEnabled ? '' : 'none';
+        };
+      });
+      el.querySelector('#save-math-cfg').onclick = () => {
+        const patch = {
+          mathDefaultLevel: chosenLevel,
+          mathDefaultCount: +el.querySelector('#cfg-mathDefaultCount').value,
+          mathPointsPerCorrect: +el.querySelector('#cfg-mathPointsPerCorrect').value,
+          mathTimerEnabled: timerEnabled,
+          mathTimerSeconds: +el.querySelector('#cfg-mathTimerSeconds').value,
+        };
+        for (const k in patch) {
+          if (k === 'mathTimerEnabled') continue;
+          if (isNaN(patch[k]) || patch[k] < 0) { UI.toast('请输入有效数值', 'warn'); return; }
+        }
+        if (patch.mathDefaultCount < 3 || patch.mathDefaultCount > 50) { UI.toast('默认题目数应在 3-50 之间', 'warn'); return; }
+        if (timerEnabled && (patch.mathTimerSeconds < 3 || patch.mathTimerSeconds > 120)) { UI.toast('限时秒数应在 3-120 之间', 'warn'); return; }
+        Store.updateConfig(patch);
+        UI.toast('已保存', 'success');
+      };
+    } else if (tab === 'reading-materials') {
+      el.querySelector('#add-rm').onclick = () => this._editReadingMaterial();
+      el.querySelectorAll('.rm-row .edit').forEach(b => { b.onclick = () => this._editReadingMaterial(b.dataset.id); });
+      el.querySelectorAll('.rm-row .del').forEach(b => {
+        b.onclick = async () => {
+          const ok = await UI.confirm('确定删除这个素材？', '删除确认');
+          if (!ok) return;
+          Store.removeReadingMaterial(b.dataset.id);
+          UI.toast('已删除', 'success');
+          this._renderAdminTab('reading-materials');
+        };
+      });
+    } else if (tab === 'reading-review') {
+      el.querySelector('#save-reading-cfg').onclick = () => {
+        const patch = {
+          readingApprovedPoints: +el.querySelector('#cfg-readingApprovedPoints').value,
+          readingRejectedPenalty: +el.querySelector('#cfg-readingRejectedPenalty').value,
+        };
+        for (const k in patch) if (isNaN(patch[k]) || patch[k] < 0) { UI.toast('请输入有效数值', 'warn'); return; }
+        Store.updateConfig(patch);
+        UI.toast('已保存', 'success');
+      };
+      el.querySelectorAll('.review-card').forEach(card => {
+        const id = card.dataset.id;
+        card.querySelectorAll('[data-act]').forEach(btn => {
+          btn.onclick = async () => {
+            UI.click();
+            const act = btn.dataset.act;
+            const cfg = Store.getConfig();
+            if (act === 'approve') {
+              const note = await UI.promptText('评价（可选）', '如：发音清晰，朗读流利', '');
+              if (note === null) return;
+              Store.updateReadingRecord(id, { status: 'approved', reviewNote: note });
+              const pts = cfg.readingApprovedPoints;
+              if (pts > 0) {
+                Store.addPoints(pts);
+                const rect = card.getBoundingClientRect();
+                UI.floatPoints(pts, rect.left + rect.width / 2, rect.top);
+              }
+              UI.toast('已通过' + (pts > 0 ? `，奖励 ${pts} 积分` : ''), 'success');
+            } else if (act === 'reject') {
+              const note = await UI.promptText('评价（必填）', '如：朗读不完整，请重新朗读', '');
+              if (note === null || !note.trim()) { UI.toast('请填写不通过原因', 'warn'); return; }
+              Store.updateReadingRecord(id, { status: 'rejected', reviewNote: note.trim() });
+              const pen = cfg.readingRejectedPenalty;
+              if (pen > 0) Store.addPoints(-pen);
+              UI.toast('已标记为不通过' + (pen > 0 ? `，扣 ${pen} 积分` : ''), 'warn');
+            } else if (act === 'delete') {
+              const ok = await UI.confirm('确定删除这条录音记录？', '删除确认');
+              if (!ok) return;
+              Store.removeReadingRecord(id);
+              UI.toast('已删除', 'success');
+            }
+            this._renderAdminTab('reading-review');
+          };
+        });
+      });
+    }
+  },
+
+  async _editProduct(id) {
+    UI.click();
+    const products = Store.getProducts();
+    const p = id ? products.find(x => x.id === id) : { name: '', icon: 'fa-gift', price: 10, stock: 99 };
+    if (!p) return;
+    const name = await UI.promptText('商品名称', '如：看动画片30分钟', p.name);
+    if (name === null) return;
+    if (!name.trim()) { UI.toast('名称不能为空', 'warn'); return; }
+    const priceStr = await UI.promptText('所需积分', '如：60', String(p.price));
+    if (priceStr === null) return;
+    const price = +priceStr;
+    if (isNaN(price) || price < 0) { UI.toast('积分无效', 'warn'); return; }
+    const stockStr = await UI.promptText('库存数量', '如：99', String(p.stock));
+    if (stockStr === null) return;
+    const stock = +stockStr;
+    if (isNaN(stock) || stock < 0) { UI.toast('库存无效', 'warn'); return; }
+    const icon = await this._pickIcon(p.icon);
+    if (icon === null) return;
+    const data = { name: name.trim(), icon, price, stock };
+    if (id) Store.updateProduct(id, data);
+    else Store.addProduct(data);
+    UI.toast('已保存', 'success');
+    this._renderAdminTab('shop');
+  },
+
+  _pickIcon(defIcon) {
+    return new Promise(resolve => {
+      const mask = document.createElement('div');
+      mask.className = 'modal-mask';
+      mask.innerHTML = `
+        <div class="modal-card" style="max-width:380px">
+          <div class="modal-title"><i class="fa-solid fa-icons"></i> 选择图标</div>
+          <div class="icon-grid" id="icon-grid">
+            ${this.PRODUCT_ICONS.map(i => `<div class="icon-option ${i === defIcon ? 'active' : ''}" data-icon="${i}"><i class="fa-solid ${i}"></i></div>`).join('')}
+          </div>
+          <div class="modal-actions" style="margin-top:18px">
+            <button class="btn btn-ghost modal-cancel">取消</button>
+            <button class="btn btn-primary modal-ok">确定</button>
+          </div>
+        </div>`;
+      document.body.appendChild(mask);
+      requestAnimationFrame(() => mask.classList.add('show'));
+      let chosen = defIcon;
+      mask.querySelector('#icon-grid').addEventListener('click', e => {
+        const opt = e.target.closest('.icon-option'); if (!opt) return;
+        UI.click();
+        mask.querySelectorAll('.icon-option').forEach(x => x.classList.remove('active'));
+        opt.classList.add('active');
+        chosen = opt.dataset.icon;
+      });
+      const close = (v) => { mask.classList.remove('show'); setTimeout(() => { mask.remove(); resolve(v); }, 300); };
+      mask.querySelector('.modal-cancel').onclick = () => close(null);
+      mask.querySelector('.modal-ok').onclick = () => close(chosen);
+    });
+  },
+
+  renderMath() {
+    const cfg = Store.getConfig();
+    const screen = document.getElementById('screen');
+    const levels = Store.MATH_LEVELS;
+    const curLevel = levels[cfg.mathDefaultLevel] || levels[0];
+    screen.classList.remove('studying');
+    if (this.math && this.math.qTimerId) clearInterval(this.math.qTimerId);
+    this.math = {
+      mode: 'setup', levelIdx: cfg.mathDefaultLevel, count: cfg.mathDefaultCount,
+      perCorrect: cfg.mathPointsPerCorrect, questions: [], idx: 0, correct: 0, answers: [],
+      timerEnabled: false, timerSeconds: 15, qTimerId: null, qStartAt: 0, _submitting: false,
+    };
+    screen.innerHTML = `
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-square-root-variable"></i> 准备开始</div>
+        <div class="math-config-display">
+          <div class="mcd-item">
+            <div class="mcd-label">当前难度</div>
+            <div class="mcd-value">
+              <b>${escHtml(curLevel.label)}</b>
+              <span class="mcd-desc">${escHtml(curLevel.desc)}</span>
+            </div>
+          </div>
+          <div class="mcd-item"><div class="mcd-label">每次题数</div><div class="mcd-value"><b>${this.math.count} 题</b></div></div>
+          <div class="mcd-item"><div class="mcd-label">每题积分</div><div class="mcd-value"><b>+${this.math.perCorrect}</b></div></div>
+        </div>
+        <div class="notice"><i class="fa-solid fa-lock"></i><span>难度和题数由管理后台设置</span></div>
+        <button class="btn btn-primary btn-block btn-lg" id="math-start"><i class="fa-solid fa-play"></i> 开始答题</button>
+      </div>
+      <div class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> 最近记录</div>
+      ${this._mathHistoryHtml()}
+    `;
+    document.getElementById('math-start').onclick = () => { UI.click(); this._mathStartPlay(); };
+  },
+
+  _mathHistoryHtml() {
+    const records = Store.getMathRecords().slice(0, 5);
+    if (records.length === 0) return '<div class="empty-list">还没有练习记录</div>';
+    return records.map(r => {
+      const pct = r.total ? Math.round(r.correct / r.total * 100) : 0;
+      const lvl = Store.MATH_LEVELS[r.levelIdx] || {};
+      return `
+        <div class="record-card">
+          <div class="record-head">
+            <div><b>${escHtml(lvl.label || '-')}</b> · ${r.total} 题</div>
+            <div class="meta">${UI.fmtDate(r.createdAt)}</div>
+          </div>
+          <div class="record-body">
+            <div class="stat-card green-sm"><div class="v">${r.correct}</div><div class="l">答对</div></div>
+            <div class="stat-card gold-sm"><div class="v">${pct}%</div><div class="l">正确率</div></div>
+            <div class="stat-card blue-sm"><div class="v">+${r.earnedPoints}</div><div class="l">积分</div></div>
+          </div>
+        </div>`;
+    }).join('');
+  },
+
+  _mathStartPlay() {
+    const cfg = Store.getConfig();
+    this.math.mode = 'play';
+    this.math.questions = MathEngine.generate(this.math.levelIdx, this.math.count);
+    this.math.idx = 0;
+    this.math.correct = 0;
+    this.math.answers = [];
+    this.math.timerEnabled = !!cfg.mathTimerEnabled;
+    this.math.timerSeconds = Math.max(3, parseInt(cfg.mathTimerSeconds) || 15);
+    this.math._submitting = false;
+    this._mathRenderQuestion();
+  },
+
+  _mathRenderQuestion() {
+    const q = this.math.questions[this.math.idx];
+    const levels = Store.MATH_LEVELS;
+    const total = this.math.questions.length;
+    const progressBar = `<div class="progress-bar"><div class="fill" style="width:${(this.math.idx / total * 100)}%"></div></div>`;
+    const screen = document.getElementById('screen');
+    screen.classList.remove('studying');
+    screen.innerHTML = `
+      ${progressBar}
+      <div class="card math-card">
+        <div class="math-header">
+          <div class="q-counter">第 ${this.math.idx + 1} / ${total} 题</div>
+          ${this.math.timerEnabled ? `<div class="q-timer" id="math-timer"><i class="fa-solid fa-stopwatch"></i><span>${this.math.timerSeconds}s</span></div>` : ''}
+          <div class="q-level">${escHtml(levels[this.math.levelIdx].label)}</div>
+        </div>
+        <div class="math-question">
+          <div class="q-text">${escHtml(q.q)}</div>
+          <div class="q-equals">=</div>
+          <div class="q-answer-wrap"><input type="text" id="math-ans" autocomplete="off" inputmode="numeric" placeholder="?" /></div>
+        </div>
+        <div class="q-feedback" id="math-feedback"></div>
+        <button class="btn btn-primary btn-block btn-lg" id="math-submit"><i class="fa-solid fa-check"></i> 提交答案</button>
+        <button class="btn btn-ghost btn-block" id="math-quit" style="margin-top:8px"><i class="fa-solid fa-right-from-bracket"></i> 退出</button>
+      </div>
+      <div class="math-points-bar"><i class="fa-solid fa-coins"></i> 已获积分 <b>+${this.math.correct * this.math.perCorrect}</b></div>
+    `;
+    setTimeout(() => { const input = document.getElementById('math-ans'); input && input.focus(); }, 50);
+    document.getElementById('math-submit').onclick = () => this._mathSubmit();
+    document.getElementById('math-quit').onclick = () => location.hash = '#/home';
+    document.getElementById('math-ans').addEventListener('keydown', e => { if (e.key === 'Enter') this._mathSubmit(); });
+    this._mathStartTimer();
+  },
+
+  _mathStartTimer() {
+    this._mathStopTimer();
+    if (!this.math || !this.math.timerEnabled) return;
+    const el = document.getElementById('math-timer');
+    if (!el) return;
+    const total = this.math.timerSeconds;
+    this.math.qStartAt = Date.now();
+    el.querySelector('span').textContent = total + 's';
+    el.classList.remove('warn');
+    this.math.qTimerId = setInterval(() => {
+      if (!this.math || this.math.mode !== 'play') { this._mathStopTimer(); return; }
+      const elapsed = (Date.now() - this.math.qStartAt) / 1000;
+      const remain = Math.max(0, total - elapsed);
+      const timerEl = document.getElementById('math-timer');
+      if (!timerEl) { this._mathStopTimer(); return; }
+      timerEl.querySelector('span').textContent = remain.toFixed(1) + 's';
+      if (remain <= 5) timerEl.classList.add('warn');
+      else timerEl.classList.remove('warn');
+      if (remain <= 0) { this._mathStopTimer(); this._mathTimeout(); }
+    }, 100);
+  },
+
+  _mathStopTimer() {
+    if (this.math && this.math.qTimerId) { clearInterval(this.math.qTimerId); this.math.qTimerId = null; }
+  },
+
+  _mathTimeout() {
+    const m = this.math;
+    if (!m || m.mode !== 'play' || m._submitting) return;
+    const q = m.questions[m.idx]; if (!q) return;
+    m._submitting = true;
+    m.answers.push({ q: q.q, a: q.a, userAns: null, correct: false, timeout: true });
+    const fb = document.getElementById('math-feedback');
+    if (fb) fb.innerHTML = `<div class="fb-no"><i class="fa-solid fa-stopwatch"></i> 时间到！答案是 <b>${escHtml(q.a)}</b></div>`;
+    UI.pulseRed();
+    const submitBtn = document.getElementById('math-submit');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.style.opacity = '0.6'; }
+    const input = document.getElementById('math-ans');
+    if (input) input.disabled = true;
+    setTimeout(() => {
+      if (this.math !== m) return;
+      m._submitting = false;
+      m.idx++;
+      if (m.idx >= m.questions.length) this._mathFinish();
+      else this._mathRenderQuestion();
+    }, 900);
+  },
+
+  _mathSubmit() {
+    const m = this.math;
+    if (!m || m.mode !== 'play' || m._submitting) return;
+    const input = document.getElementById('math-ans');
+    const fb = document.getElementById('math-feedback');
+    const q = m.questions[m.idx];
+    let userAns = (input.value || '').trim();
+    if (userAns === '') { UI.toast('请输入答案', 'warn'); return; }
+    m._submitting = true;
+    this._mathStopTimer();
+    userAns = userAns.replace(/\s+/g, '');
+    const userNum = Number(userAns);
+    const correct = userNum === q.a || userAns === String(q.a);
+    m.answers.push({ q: q.q, a: q.a, userAns, correct });
+    if (correct) {
+      m.correct++;
+      fb.innerHTML = `<div class="fb-ok"><i class="fa-solid fa-circle-check"></i> 答对啦！+${m.perCorrect} 积分</div>`;
+      Store.addPoints(m.perCorrect);
+      this.syncPoints();
+      UI.success();
+      const rect = document.getElementById('points-pill').getBoundingClientRect();
+      UI.floatPoints(m.perCorrect, rect.left + rect.width / 2, rect.top + rect.height / 2);
+    } else {
+      fb.innerHTML = `<div class="fb-no"><i class="fa-solid fa-circle-xmark"></i> 答案是 <b>${escHtml(q.a)}</b></div>`;
+      UI.pulseRed();
+    }
+    document.getElementById('math-submit').disabled = true;
+    document.getElementById('math-submit').style.opacity = '0.6';
+    setTimeout(() => {
+      if (this.math !== m) return;
+      m._submitting = false;
+      m.idx++;
+      if (m.idx >= m.questions.length) this._mathFinish();
+      else this._mathRenderQuestion();
+    }, 900);
+  },
+
+  _mathFinish() {
+    const m = this.math;
+    const total = m.questions.length;
+    this._mathStopTimer();
+    const earned = m.correct * m.perCorrect;
+    const level = Store.MATH_LEVELS[m.levelIdx];
+    Store.addMathRecord({
+      levelIdx: m.levelIdx, levelLabel: level.label,
+      total, correct: m.correct, earnedPoints: earned, questions: m.answers.slice(),
+    });
+    const perfect = m.correct === total;
+    if (perfect) UI.confetti(60);
+    const html = `
+      <div class="card math-card result">
+        <div class="result-emoji">${perfect ? '🏆' : m.correct / total >= 0.7 ? '🎉' : '💪'}</div>
+        <div class="result-title">${perfect ? '太棒啦，全部答对！' : '练习完成'}</div>
+        <div class="result-stats">
+          <div class="stat-card green"><div class="v">${m.correct} / ${total}</div><div class="l">答对题数</div></div>
+          <div class="stat-card gold"><div class="v">+${earned}</div><div class="l">本次积分</div></div>
+        </div>
+        <button class="btn btn-primary btn-block btn-lg" id="math-again"><i class="fa-solid fa-rotate-right"></i> 再来一次</button>
+        <button class="btn btn-ghost btn-block" id="math-home" style="margin-top:8px"><i class="fa-solid fa-house"></i> 返回首页</button>
+      </div>
+    `;
+    document.getElementById('screen').innerHTML = html;
+    document.getElementById('math-again').onclick = () => this._mathStartPlay();
+    document.getElementById('math-home').onclick = () => location.hash = '#/home';
+  },
+
+  renderReading() {
+    this.reading = { view: 'list', currentMat: null, recorder: null };
+    this._readingRenderList();
+  },
+
+  _readingRenderList() {
+    const screen = document.getElementById('screen');
+    screen.classList.remove('studying');
+    const materials = Store.getReadingMaterials();
+    const tabs = [
+      { key: 'zh-poem', label: '古诗', icon: 'fa-feather' },
+      { key: 'zh-text', label: '中文课文', icon: 'fa-book-open' },
+      { key: 'en-article', label: '英文短文', icon: 'fa-language' },
+      { key: 'en-words', label: '英文单词', icon: 'fa-list-check' },
+    ];
+    this.reading.catTab = this.reading.catTab || 'zh-poem';
+    const list = materials.filter(m => m.type === this.reading.catTab);
+    screen.innerHTML = `
+      <div class="reading-tabs" id="reading-tabs">
+        ${tabs.map(t => `
+          <div class="rtab ${this.reading.catTab === t.key ? 'active' : ''}" data-key="${t.key}">
+            <i class="fa-solid ${t.icon}"></i> ${t.label}
+          </div>`).join('')}
+      </div>
+      <div class="reading-list">
+        ${list.length === 0
+          ? `<div class="empty-list">暂无素材，请到管理后台添加</div>`
+          : list.map(m => `
+              <div class="reading-item" data-id="${escHtml(m.id)}">
+                <div class="ri-icon"><i class="fa-solid fa-book"></i></div>
+                <div class="ri-body">
+                  <div class="ri-title">${escHtml(m.title)}</div>
+                  <div class="ri-sub">${m.author ? escHtml(m.author) + ' · ' : ''}${escHtml((m.content || '').slice(0, 30))}${m.content && m.content.length > 30 ? '…' : ''}</div>
+                </div>
+                <div class="ri-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+              </div>`).join('')}
+      </div>
+      <div class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> 我的提交</div>
+      ${this._readingMySubmissions()}
+    `;
+    document.querySelectorAll('#reading-tabs .rtab').forEach(t => {
+      t.addEventListener('click', () => { UI.click(); this.reading.catTab = t.dataset.key; this._readingRenderList(); });
+    });
+    document.querySelectorAll('.reading-item').forEach(it => {
+      it.addEventListener('click', () => {
+        UI.click();
+        const m = materials.find(x => x.id === it.dataset.id);
+        if (m) this._readingEnterPractice(m);
+      });
+    });
+  },
+
+  _readingMySubmissions() {
+    const all = Store.getReadingRecords().slice(0, 6);
+    if (all.length === 0) return '<div class="empty-list">还没有提交过</div>';
+    return all.map(r => {
+      const statusMap = {
+        pending: ['待审核', 'var(--orange)', 'fa-clock'],
+        approved: ['已通过', 'var(--green)', 'fa-circle-check'],
+        rejected: ['未通过', 'var(--red)', 'fa-circle-xmark'],
+      };
+      const [st, color, icon] = statusMap[r.status] || statusMap.pending;
+      return `
+        <div class="sub-item">
+          <i class="fa-solid ${icon}" style="color:${color}"></i>
+          <div class="sub-title">${escHtml(r.materialTitle)}</div>
+          <div class="sub-status" style="color:${color}">${st}</div>
+        </div>`;
+    }).join('');
+  },
+
+  _readingEnterPractice(material) {
+    this.reading.view = 'practice';
+    this.reading.currentMat = material;
+    this._readingRenderPractice();
+  },
+
+  _readingRenderPractice() {
+    const screen = document.getElementById('screen');
+    const m = this.reading.currentMat;
+    const rec = this.reading.recorder;
+    const isRecording = rec && rec.mediaRecorder && rec.mediaRecorder.state !== 'inactive';
+    const hasAudio = this.reading.previewResult && this.reading.previewResult.base64;
+    screen.innerHTML = `
+      <button class="btn btn-ghost reading-back" id="reading-back"><i class="fa-solid fa-arrow-left"></i> 返回列表</button>
+      <div class="card reading-practice">
+        <div class="rp-title">${escHtml(m.title)}</div>
+        ${m.author ? `<div class="rp-author">${escHtml(m.author)}</div>` : ''}
+        <div class="rp-content">${escHtml(m.content || '').replace(/\n/g, '<br>')}</div>
+      </div>
+      <div class="recorder-panel">
+        <div class="rec-timer">
+          <div class="rec-dot ${isRecording ? 'rec' : ''}"></div>
+          <span id="rec-time">${UI.fmtTime(this.reading.recordingSec || 0)}</span>
+        </div>
+        <div class="rec-big-btn-wrap">
+          ${isRecording
+            ? `<button class="rec-btn stop" id="rec-stop"><i class="fa-solid fa-stop"></i> 停止</button>`
+            : `<button class="rec-btn start" id="rec-start"><i class="fa-solid fa-microphone"></i> 开始朗读</button>`}
+        </div>
+        ${!isRecording && !hasAudio ? `<div class="rec-hint">点击按钮后请允许麦克风权限</div>` : ''}
+      </div>
+      ${hasAudio ? `
+        <div class="card reading-preview">
+          <div class="preview-title"><i class="fa-solid fa-play"></i> 录音预览</div>
+          <audio controls src="${escHtml(this.reading.previewResult.base64)}" style="width:100%"></audio>
+          <div class="preview-actions">
+            <button class="btn btn-ghost" id="rec-redo"><i class="fa-solid fa-rotate-left"></i> 重录</button>
+            <button class="btn btn-primary" id="rec-submit"><i class="fa-solid fa-paper-plane"></i> 提交审核</button>
+          </div>
+        </div>` : ''}
+    `;
+    document.getElementById('reading-back').onclick = async () => {
+      if (this.reading.recorder) { try { await this.reading.recorder.cancel(); } catch (e) {} }
+      this.reading.recorder = null;
+      this.reading.previewResult = null;
+      this.reading.view = 'list';
+      this._readingRenderList();
+    };
+    const startBtn = document.getElementById('rec-start');
+    if (startBtn) startBtn.onclick = () => this._readingStartRec();
+    const stopBtn = document.getElementById('rec-stop');
+    if (stopBtn) stopBtn.onclick = () => this._readingStopRec();
+    const redoBtn = document.getElementById('rec-redo');
+    if (redoBtn) redoBtn.onclick = () => { UI.click(); this.reading.previewResult = null; this._readingRenderPractice(); };
+    const subBtn = document.getElementById('rec-submit');
+    if (subBtn) subBtn.onclick = () => this._readingSubmit();
+  },
+
+  async _readingStartRec() {
+    UI.click();
+    const micGranted = await Permission.ensureMic('中英诵读需要录音');
+    if (!micGranted) { UI.toast('麦克风权限未开启，无法录音', 'warn', 3000); return; }
+    try {
+      const rec = new ReadingRecorder({
+        onStart: () => { this.reading.recordingSec = 0; this._readingRenderPractice(); },
+        onTick: (sec) => {
+          this.reading.recordingSec = sec;
+          const el = document.getElementById('rec-time');
+          if (el) el.textContent = UI.fmtTime(sec);
+        },
+        onStop: (result) => {
+          this.reading.previewResult = result;
+          this.reading.recorder = null;
+          this._readingRenderPractice();
+        },
+      });
+      this.reading.recorder = rec;
+      await rec.start();
+    } catch (e) {
+      console.error(e);
+      UI.toast(e.message || '录音启动失败', 'error');
+      this.reading.recorder = null;
+    }
+  },
+
+  async _readingStopRec() {
+    UI.click();
+    if (!this.reading.recorder) return;
+    try { await this.reading.recorder.stop(); } catch (e) {}
+  },
+
+  async _readingSubmit() {
+    const r = this.reading.previewResult;
+    const m = this.reading.currentMat;
+    if (!r || !m) return;
+    const MAX_ONE_MB = 5;
+    if (r.size > MAX_ONE_MB * 1024 * 1024) { UI.toast(`单条录音不能超过 ${MAX_ONE_MB} MB，请分段朗读`, 'error', 4000); return; }
+    const audioKey = 'audio_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+    const saved = await IDB.put(audioKey, r.blob);
+    if (!saved) { UI.toast('录音保存失败，请重试', 'error'); return; }
+    const ok = Store.addReadingRecord({
+      materialId: m.id, materialTitle: m.title, materialType: m.type,
+      duration: Math.round(r.duration * 10) / 10, audioKey, mime: r.mime, size: r.size,
+    });
+    if (!ok) { IDB.delete(audioKey).catch(() => {}); UI.toast('保存失败，空间可能已满', 'error'); return; }
+    UI.toast('已提交，等待审核', 'success');
+    this.reading.previewResult = null;
+    this.reading.view = 'list';
+    this._readingRenderList();
+  },
+
+  _readingTypeLabel(t) {
+    return { 'zh-poem': '古诗', 'zh-text': '中文课文', 'en-article': '英文短文', 'en-words': '英文单词' }[t] || t;
+  },
+
+  _adminReadingMaterials() {
+    const list = Store.getReadingMaterials();
+    return `
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-book"></i> 诵读素材管理</div>
+        <button class="btn btn-primary btn-block" id="add-rm"><i class="fa-solid fa-plus"></i> 添加新素材</button>
+      </div>
+      <div class="section-title"><i class="fa-solid fa-list"></i> 当前素材 (${list.length})</div>
+      ${list.map(m => `
+        <div class="rm-row" data-id="${escHtml(m.id)}">
+          <div class="rm-type">${escHtml(this._readingTypeLabel(m.type))}</div>
+          <div class="rm-body">
+            <div class="rm-title">${escHtml(m.title)}</div>
+            <div class="rm-content">${escHtml((m.content || '').slice(0, 60))}${m.content && m.content.length > 60 ? '…' : ''}</div>
+          </div>
+          <div class="rm-actions">
+            <button class="edit" data-id="${escHtml(m.id)}"><i class="fa-solid fa-pen"></i></button>
+            <button class="del" data-id="${escHtml(m.id)}"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>`).join('')}
+      ${list.length === 0 ? '<div class="empty-list">还没有素材</div>' : ''}
+    `;
+  },
+
+  _adminReadingReview() {
+    const cfg = Store.getConfig();
+    const records = Store.getReadingRecords();
+    const pending = records.filter(r => r.status === 'pending');
+    const others = records.filter(r => r.status !== 'pending');
+    return `
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-clipboard-check"></i> 诵读审核</div>
+        <div class="form-row"><label>通过奖励积分</label><input type="number" id="cfg-readingApprovedPoints" value="${cfg.readingApprovedPoints}" min="0" max="100" /></div>
+        <div class="form-row"><label>不通过扣分</label><input type="number" id="cfg-readingRejectedPenalty" value="${cfg.readingRejectedPenalty}" min="0" max="100" /></div>
+        <button class="btn btn-primary btn-block" id="save-reading-cfg"><i class="fa-solid fa-floppy-disk"></i> 保存</button>
+      </div>
+      <div class="section-title"><i class="fa-solid fa-hourglass-half"></i> 待审核 (${pending.length})</div>
+      ${this._readingReviewListHtml(pending, true)}
+      ${pending.length === 0 ? '<div class="empty-list">没有待审核的录音</div>' : ''}
+      <div class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> 历史记录 (${others.length})</div>
+      ${this._readingReviewListHtml(others, false)}
+      ${others.length === 0 ? '<div class="empty-list">还没有历史</div>' : ''}
+    `;
+  },
+
+  _readingReviewListHtml(records, showActions) {
+    if (records.length === 0) return '';
+    return records.map(r => {
+      const statusMap = {
+        pending: ['待审核', 'var(--orange)', 'fa-clock'],
+        approved: ['已通过', 'var(--green)', 'fa-circle-check'],
+        rejected: ['未通过', 'var(--red)', 'fa-circle-xmark'],
+      };
+      const [st, color, icon] = statusMap[r.status] || statusMap.pending;
+      return `
+        <div class="review-card" data-id="${escHtml(r.id)}">
+          <div class="review-head">
+            <div class="review-title">${escHtml(r.materialTitle)}</div>
+            <div class="review-meta">
+              <i class="fa-solid ${icon}" style="color:${color}"></i> ${st} · ${(r.duration || 0).toFixed(1)}s · ${UI.fmtDate(r.createdAt)}
+            </div>
+          </div>
+          ${r.audioKey
+            ? `<audio controls data-audio-key="${escHtml(r.audioKey)}" style="width:100%"></audio>`
+            : r.audioBase64
+              ? `<audio controls src="${escHtml(r.audioBase64)}" style="width:100%"></audio>` : ''}
+          ${r.reviewNote ? `<div class="review-note">备注：${escHtml(r.reviewNote)}</div>` : ''}
+          ${showActions ? `
+            <div class="review-actions">
+              <button class="btn btn-red" data-act="reject"><i class="fa-solid fa-xmark"></i> 不通过</button>
+              <button class="btn btn-primary" data-act="approve"><i class="fa-solid fa-check"></i> 通过 +<span class="approve-val">${Store.getConfig().readingApprovedPoints}</span></button>
+              <button class="btn btn-ghost" data-act="delete"><i class="fa-solid fa-trash"></i> 删除</button>
+            </div>` : `
+            <div class="review-actions">
+              <button class="btn btn-ghost" data-act="delete"><i class="fa-solid fa-trash"></i> 删除</button>
+            </div>`}
+        </div>`;
+    }).join('');
+  },
+
+  _adminMathConfig() {
+    const cfg = Store.getConfig();
+    const levels = Store.MATH_LEVELS;
+    return `
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-square-root-variable"></i> 数学强化配置</div>
+        <div class="form-row">
+          <label>默认难度</label>
+          <div class="chip-row" id="mathcfg-levels">
+            ${levels.map((lvl, i) => `<div class="chip ${cfg.mathDefaultLevel === i ? 'active' : ''}" data-idx="${i}">${escHtml(lvl.label)}</div>`).join('')}
+          </div>
+        </div>
+        <div class="form-row"><label>默认题目数</label><input type="number" id="cfg-mathDefaultCount" value="${cfg.mathDefaultCount}" min="3" max="50" /></div>
+        <div class="form-row"><label>每答对一题积分</label><input type="number" id="cfg-mathPointsPerCorrect" value="${cfg.mathPointsPerCorrect}" min="1" max="100" /></div>
+        <div class="form-row">
+          <label>每题限时</label>
+          <div class="chip-row" id="mathcfg-timer">
+            <div class="chip ${!cfg.mathTimerEnabled ? 'active' : ''}" data-on="0">不限时</div>
+            <div class="chip ${cfg.mathTimerEnabled ? 'active' : ''}" data-on="1">限时</div>
+          </div>
+        </div>
+        <div class="form-row" id="mathcfg-timer-sec-row" style="${cfg.mathTimerEnabled ? '' : 'display:none'}">
+          <label>每题限时（秒）</label>
+          <input type="number" id="cfg-mathTimerSeconds" value="${cfg.mathTimerSeconds}" min="3" max="120" step="1" />
+          <div class="muted" style="font-size:11px;margin-top:4px;padding-left:4px">建议 10~30 秒。超时自动判错、不加分</div>
+        </div>
+        <button class="btn btn-primary btn-block" id="save-math-cfg"><i class="fa-solid fa-floppy-disk"></i> 保存</button>
+      </div>
+      <div class="section-title"><i class="fa-solid fa-list"></i> 各难度说明</div>
+      <div class="card">
+        ${levels.map(l => `<div style="padding:6px 0"><b>${escHtml(l.label)}</b>：${escHtml(l.desc)}</div>`).join('')}
+      </div>
+    `;
+  },
+
+  async _editReadingMaterial(id) {
+    const list = Store.getReadingMaterials();
+    const m = id ? list.find(x => x.id === id) : { type: 'zh-poem', title: '', author: '', content: '' };
+    if (!m) return;
+    const typeLabel = await this._pickReadingType(m.type);
+    if (typeLabel === null) return;
+    const title = await UI.promptText('标题', '如：静夜思', m.title);
+    if (title === null || !title.trim()) { UI.toast('标题不能为空', 'warn'); return; }
+    const author = await UI.promptText('作者（可选）', '如：李白', m.author || '');
+    if (author === null) return;
+    const content = await UI.promptText('正文内容', '粘贴课文/诗句/单词', m.content || '', true);
+    if (content === null || !content.trim()) { UI.toast('内容不能为空', 'warn'); return; }
+    const data = { type: typeLabel, title: title.trim(), author: author.trim(), content: content.trim() };
+    if (id) Store.updateReadingMaterial(id, data);
+    else Store.addReadingMaterial(data);
+    UI.toast('已保存', 'success');
+    this._renderAdminTab('reading-materials');
+  },
+
+  _pickReadingType(def) {
+    return new Promise(resolve => {
+      const types = [
+        { v: 'zh-poem', t: '古诗' },
+        { v: 'zh-text', t: '中文课文' },
+        { v: 'en-article', t: '英文短文' },
+        { v: 'en-words', t: '英文单词' },
+      ];
+      const mask = document.createElement('div');
+      mask.className = 'modal-mask show';
+      mask.innerHTML = `
+        <div class="modal-card" style="max-width:380px">
+          <div class="modal-title"><i class="fa-solid fa-tag"></i> 选择类型</div>
+          <div class="icon-grid" id="type-grid">
+            ${types.map(t => `<div class="icon-option ${t.v === def ? 'active' : ''}" data-type="${t.v}">${t.t}</div>`).join('')}
+          </div>
+          <div class="modal-actions" style="margin-top:18px">
+            <button class="btn btn-ghost modal-cancel">取消</button>
+            <button class="btn btn-primary modal-ok">确定</button>
+          </div>
+        </div>`;
+      document.body.appendChild(mask);
+      let chosen = def;
+      mask.querySelector('#type-grid').addEventListener('click', e => {
+        const opt = e.target.closest('.icon-option'); if (!opt) return;
+        mask.querySelectorAll('.icon-option').forEach(x => x.classList.remove('active'));
+        opt.classList.add('active');
+        chosen = opt.dataset.type;
+      });
+      const close = (v) => { mask.remove(); resolve(v); };
+      mask.querySelector('.modal-cancel').onclick = () => close(null);
+      mask.querySelector('.modal-ok').onclick = () => close(chosen);
+    });
+  },
+
+  APP_VERSION: '1.0.2',
+  APP_COPYRIGHT: 'github@Fourtime',
+
+  _genUID() {
+    try {
+      const stats = Store.getStats();
+      const profile = Store.getProfile() || {};
+      const points = Store.getPoints();
+      const totalSec = Math.round(stats.totalSec || 0);
+      const streak = profile.streak || 0;
+      const payload = `${points}|${totalSec}|${streak}`;
+      const b64 = btoa(unescape(encodeURIComponent(payload)));
+      return 'FT-' + b64.replace(/=+$/, '');
+    } catch (e) { console.warn('UID 生成失败', e); return 'FT-ERROR'; }
+  },
+
+  async _copyText(text) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch (e) {}
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) { return false; }
+  },
+
+  renderAbout() {
+    const screen = document.getElementById('screen');
+    screen.classList.remove('studying');
+    const stats = Store.getStats();
+    const profile = Store.getProfile() || {};
+    const points = Store.getPoints();
+    const totalSec = Math.round(stats.totalSec || 0);
+    const streak = profile.streak || 0;
+    const uid = this._genUID();
+
+    screen.innerHTML = `
+      <div class="about-hero">
+        <div class="about-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="about-name">好好学习</div>
+        <div class="about-version">v${escHtml(this.APP_VERSION)}</div>
+        <div class="about-tagline">陪伴学习 · 让专注有回报</div>
+      </div>
+
+      <div class="section-title"><i class="fa-solid fa-circle-info"></i> 应用信息</div>
+      <div class="about-list">
+        <div class="about-row">
+          <div class="about-row-icon" style="background:linear-gradient(135deg,#3dd68c,#37b6ff)"><i class="fa-solid fa-code-branch"></i></div>
+          <div class="about-row-body">
+            <div class="about-row-label">版本</div>
+            <div class="about-row-value">v${escHtml(this.APP_VERSION)}</div>
+          </div>
+        </div>
+        <div class="about-row">
+          <div class="about-row-icon" style="background:linear-gradient(135deg,#ffd166,#ff9f43)"><i class="fa-solid fa-database"></i></div>
+          <div class="about-row-body">
+            <div class="about-row-label">数据库</div>
+            <div class="about-row-value">Local（本地存储）</div>
+          </div>
+        </div>
+        <div class="about-row">
+          <div class="about-row-icon" style="background:linear-gradient(135deg,#a78bfa,#8b6cf0)"><i class="fa-solid fa-copyright"></i></div>
+          <div class="about-row-body">
+            <div class="about-row-label">版权所有</div>
+            <div class="about-row-value">${escHtml(this.APP_COPYRIGHT)}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title"><i class="fa-solid fa-heart"></i> 开源致谢</div>
+      <div class="about-list">
+        <div class="about-row">
+          <div class="about-row-icon" style="background:linear-gradient(135deg,#3dd68c,#28b875)"><i class="fa-solid fa-brain"></i></div>
+          <div class="about-row-body">
+            <div class="about-row-label">face-api.js</div>
+            <div class="about-row-value">@vladmandic</div>
+          </div>
+        </div>
+        <div class="about-row">
+          <div class="about-row-icon" style="background:linear-gradient(135deg,#ff5e5e,#e04a4a)"><i class="fa-solid fa-champagne-glasses"></i></div>
+          <div class="about-row-body">
+            <div class="about-row-label">canvas-confetti</div>
+            <div class="about-row-value">@catdad</div>
+          </div>
+        </div>
+        <div class="about-row">
+          <div class="about-row-icon" style="background:linear-gradient(135deg,#37b6ff,#1f9ae0)"><i class="fa-solid fa-icons"></i></div>
+          <div class="about-row-body">
+            <div class="about-row-label">Font Awesome Free</div>
+            <div class="about-row-value">Fonticons, Inc.</div>
+          </div>
+        </div>
+        <div class="about-row">
+          <div class="about-row-icon" style="background:linear-gradient(135deg,#ffd166,#e8b34a)"><i class="fa-solid fa-font"></i></div>
+          <div class="about-row-body">
+            <div class="about-row-label">Google Fonts</div>
+            <div class="about-row-value">Google</div>
+          </div>
+        </div>
+        <div class="about-row">
+          <div class="about-row-icon" style="background:linear-gradient(135deg,#a78bfa,#8b6cf0)"><i class="fa-solid fa-cloud"></i></div>
+          <div class="about-row-body">
+            <div class="about-row-label">jsDelivr</div>
+            <div class="about-row-value">Prospect One</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title"><i class="fa-solid fa-fingerprint"></i> 我的 UID</div>
+      <div class="card">
+        <div class="uid-box" id="uid-box">${escHtml(uid)}</div>
+        <div class="uid-meta">
+          <span class="uid-chip"><i class="fa-solid fa-coins"></i> ${points} 积分</span>
+          <span class="uid-chip"><i class="fa-solid fa-clock"></i> ${UI.fmtDur(totalSec)}</span>
+          <span class="uid-chip"><i class="fa-solid fa-fire"></i> ${streak} 天连胜</span>
+        </div>
+        <button class="btn btn-primary btn-block" id="uid-copy" style="margin-top:14px">
+          <i class="fa-solid fa-copy"></i> 复制 UID
+        </button>
+        <div class="muted" style="font-size:12px;margin-top:12px;line-height:1.7;text-align:center">
+          UID 由<span style="color:var(--text)">当前积分</span>、
+          <span style="color:var(--text)">学习总时长</span>、
+          <span style="color:var(--text)">连胜天数</span> 经 Base64 编码生成<br>
+          每次数据变化后 UID 会自动更新，可用于识别学习身份
+        </div>
+      </div>
+
+      <div class="about-footer">
+        Made with <span style="color:var(--red)">❤</span> by <b>${escHtml(this.APP_COPYRIGHT)}</b><br>
+        <span style="opacity:.7">© ${new Date().getFullYear()} · 保留所有权利</span>
+      </div>
+    `;
+
+    document.getElementById('uid-copy').onclick = async () => {
+      UI.click();
+      const ok = await this._copyText(uid);
+      if (ok) {
+        UI.toast('UID 已复制到剪贴板', 'success');
+        const btn = document.getElementById('uid-copy');
+        const original = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> 已复制';
+        btn.disabled = true;
+        setTimeout(() => { if (btn.isConnected) { btn.innerHTML = original; btn.disabled = false; } }, 1500);
+      } else {
+        UI.toast('复制失败，请长按 UID 手动复制', 'warn');
+      }
+    };
+  },
+};
+
+document.addEventListener('DOMContentLoaded', () => App.init());
+  </script>
+</body>
+</html>
